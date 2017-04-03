@@ -16,6 +16,7 @@ class App extends Component {
           <FormField
             id="password-box"
             label="password"
+            type="password"
             required />
           <button className="c-btn c-btn--secondary" id="register-button">Register</button>
         </Form>
