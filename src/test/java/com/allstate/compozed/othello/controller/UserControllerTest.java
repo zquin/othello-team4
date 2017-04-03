@@ -81,12 +81,29 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRecoverPassword() throws Exception {
-        //send password to email address associated with the account.
+    public void testRecoverPasswordSuccessful() throws Exception {
+        userRepository.save(user);
+        MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"emailAddress\": \"zquinn@allstate.com\"}");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void testRecoverPasswordFailed() throws Exception {
+        userRepository.save(user);
+        MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"emailAddress\": \"madkk@allstate.com\"}");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void testLogin() throws Exception {
+
+        userRepository.save(user);
         MockHttpServletRequestBuilder request = post("/user/login/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"allstate\"}");
 
@@ -96,10 +113,11 @@ public class UserControllerTest {
 
     @Test
     public void testLoginFailed() throws Exception {
+        userRepository.save(user);
         MockHttpServletRequestBuilder request = post("/user/login/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"thiswillfail\"}");
 
         this.mockMvc.perform(request)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnauthorized());
     }
 }

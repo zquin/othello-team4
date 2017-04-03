@@ -1,4 +1,4 @@
-package com.allstate.compozed.othello.Util;
+package com.allstate.compozed.othello.util;
 
 /**
  * Created by localadmin on 4/3/17.
@@ -11,31 +11,29 @@ import java.io.IOException;
 public final class EmailUtil {
 
 
-    private static final String SUBJECT = "Welcome to Othello Team 4";
-    private EmailUtil me;
-
     private EmailUtil() {
 
     }
 
-    public static void sendEmail(String emailAddress) throws IOException {
+    public static Response sendEmail(String subject, String message, String emailAddress) throws IOException {
         Email from = new Email("othelloTeam4@allstate.com");
         Email to = new Email(emailAddress);
-        Content content = new Content("text/plain", "Thank you for registering for Othello made by Team 4");
-        Mail mail = new Mail(from, SUBJECT, to, content);
-
+        Content content = new Content("text/plain", message);
+        Mail mail = new Mail(from, subject, to, content);
+        Response response = null;
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
         try {
             request.method = Method.POST;
             request.endpoint = "mail/send";
             request.body = mail.build();
-            Response response = sg.api(request);
+            response = sg.api(request);
             System.out.println(response.statusCode);
             System.out.println(response.body);
             System.out.println(response.headers);
         } catch (IOException ex) {
             throw ex;
         }
+        return response;
     }
 }
