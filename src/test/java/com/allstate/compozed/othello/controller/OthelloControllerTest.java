@@ -23,6 +23,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -148,49 +149,21 @@ public class OthelloControllerTest {
         gameBoard.setUser(user);
 
         Row row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
 
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
+        for (int i =0;i<8;i++)
+        {
+            row.setRow("X,X,X,X,X,X,X,X");
+            row.setGameBoard(gameBoard);
+            gameBoard.getRowList().add(row);
 
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
+            row = new Row();
+        }
 
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
 
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-
-        gameBoard.getRowList().add(row);
 
         gameBoardRepository.save(gameBoard);
 
-        MockHttpServletRequestBuilder request = put("/user/game/" + gameBoard.getId() + "/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = put("/game/" + gameBoard.getId() + "/").contentType(MediaType.APPLICATION_JSON)
                 .content("{" +
                         "  \"rows\": [" +
                         "    {" +
@@ -235,8 +208,81 @@ public class OthelloControllerTest {
 
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void testGetGameBoard() throws Exception {
 
+        userRepository.save(user);
+        GameBoard gameBoard = new GameBoard();
 
+        gameBoard.setUser(user);
+
+        Row row = new Row();
+
+        for (int i =0;i<8;i++)
+        {
+            row.setRow("X,X,X,X,X,X,X,X");
+            row.setGameBoard(gameBoard);
+            gameBoard.getRowList().add(row);
+
+            row = new Row();
+        }
+
+        gameBoardRepository.save(gameBoard);
+
+        MockHttpServletRequestBuilder request = get("/game/" + gameBoard.getId() + "/")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rows[0].row", equalTo("X,X,X,X,X,X,X,X")));;
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testGetGameBoards() throws Exception {
+
+        userRepository.save(user);
+        GameBoard gameBoard = new GameBoard();
+
+        gameBoard.setUser(user);
+
+        Row row = new Row();
+
+        for (int i =0;i<8;i++)
+        {
+            row.setRow("X,X,X,X,X,X,X,X");
+            row.setGameBoard(gameBoard);
+            gameBoard.getRowList().add(row);
+
+            row = new Row();
+        }
+
+        GameBoard gameBoard1 = new GameBoard();
+
+        gameBoard1.setUser(user);
+
+        for (int i =0;i<8;i++)
+        {
+            row.setRow("X,X,X,X,X,X,X,X");
+            row.setGameBoard(gameBoard);
+            gameBoard.getRowList().add(row);
+
+            row = new Row();
+        }
+
+        gameBoardRepository.save(gameBoard);
+        gameBoardRepository.save(gameBoard1);
+
+        MockHttpServletRequestBuilder request = get( "/" + user.getId() + "/games/" )
+                .contentType(MediaType.APPLICATION_JSON);
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));;
+    }
 
 //    @Test
 //    @Transactional

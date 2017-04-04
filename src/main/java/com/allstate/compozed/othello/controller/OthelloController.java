@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("")
 public class OthelloController {
 
     UserRepository userRepository;
@@ -39,7 +39,7 @@ RowRepository rowRepository;
         this.rowRepository = rowRepository;
     }
 
-    @PostMapping("/")
+    @PostMapping("/users")
     public User registerUser(@RequestBody User user) {
 
         User newUser = userRepository.save(user);
@@ -55,7 +55,7 @@ RowRepository rowRepository;
     }
 
     @ResponseBody
-    @PostMapping("/login/")
+    @PostMapping("/users/login/")
     public ResponseEntity<OthelloResponse> loginUser(@RequestBody User user) {
 
 
@@ -81,7 +81,7 @@ RowRepository rowRepository;
     }
 
     @ResponseBody
-    @PostMapping("/recover/")
+    @PostMapping("/users/recover/")
     public ResponseEntity<OthelloResponse> recoverPassword(@RequestBody User user) {
 
         User loggedInUser = userRepository.findByEmailAddress(user.getEmailAddress());
@@ -116,7 +116,7 @@ RowRepository rowRepository;
     }
 
     @ResponseBody
-    @PutMapping("/game/{id}/")
+    @PutMapping("/games/{id}/")
     public ResponseEntity<GameBoard> saveGameBoard(@RequestBody GameBoard gameBoard, @PathVariable Long id) {
         GameBoard oldGameBoard = gameBoardRepository.findOne(id);
         for (Row row : gameBoard.getRowList())
@@ -128,8 +128,23 @@ RowRepository rowRepository;
     }
 
 
+    @GetMapping("/games/{gameId}/")
+    public ResponseEntity<GameBoard> getGameBoard(@PathVariable Long gameId) {
+        return new ResponseEntity<>(gameBoardRepository.findOne(gameId),HttpStatus.OK);
+    }
+
+    /**
+     * web service which return a list of game boards for the specified user.
+     * @param userId
+     * @return list of game boards
+     */
+    @GetMapping("/{userId}/games/")
+    public ResponseEntity<List<GameBoard>> getGameBoardsForUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(gameBoardRepository.findAllByUserId(userId),HttpStatus.OK);
+    }
+
     @ResponseBody
-    @PostMapping("/{id}/game/")
+    @PostMapping("/users/{id}/games/")
     public ResponseEntity<GameBoard> createGameBoard(@PathVariable Long id) {
 
         User  user = userRepository.findOne(id);
@@ -139,49 +154,14 @@ RowRepository rowRepository;
         gameBoard.setUser(user);
 
         Row row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
-        row = new Row();
-        row.setRow("X,X,X,X,X,X,X,X");
-        row.setGameBoard(gameBoard);
-        gameBoard.getRowList().add(row);
-
+        for (int i=0; i<8 ;i++)
+        {
+            row.setRow("X,X,X,X,X,X,X,X");
+            row.setGameBoard(gameBoard);
+            gameBoard.getRowList().add(row);
+            row = new Row();
+        }
 
         return new ResponseEntity<>(gameBoardRepository.save(gameBoard),HttpStatus.OK);
-
     }
-
-
 }
