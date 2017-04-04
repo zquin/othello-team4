@@ -119,10 +119,12 @@ RowRepository rowRepository;
     @PutMapping("/game/{id}/")
     public ResponseEntity<GameBoard> saveGameBoard(@RequestBody GameBoard gameBoard, @PathVariable Long id) {
         GameBoard oldGameBoard = gameBoardRepository.findOne(id);
-
-        gameBoard.setId(oldGameBoard.getId());
-
-        return new ResponseEntity<>(gameBoardRepository.save(gameBoard),HttpStatus.OK);
+        for (Row row : gameBoard.getRowList())
+        {
+            row.setGameBoard(oldGameBoard);
+        }
+        oldGameBoard.setRowList(gameBoard.getRowList());
+        return new ResponseEntity<>(gameBoardRepository.save(oldGameBoard),HttpStatus.OK);
     }
 
 
