@@ -1,4 +1,4 @@
-package com.allstate.compozed.othello.domain;
+package com.allstate.compozed.othello.domain.response;
 
 import org.springframework.http.HttpStatus;
 

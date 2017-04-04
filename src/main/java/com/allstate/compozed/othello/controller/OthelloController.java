@@ -1,8 +1,12 @@
 package com.allstate.compozed.othello.controller;
 
+import com.allstate.compozed.othello.domain.game.GameBoard;
+import com.allstate.compozed.othello.domain.game.Row;
+import com.allstate.compozed.othello.repository.GameBoardRepository;
+import com.allstate.compozed.othello.repository.RowRepository;
 import com.allstate.compozed.othello.util.EmailUtil;
-import com.allstate.compozed.othello.domain.OthelloResponse;
-import com.allstate.compozed.othello.domain.User;
+import com.allstate.compozed.othello.domain.response.OthelloResponse;
+import com.allstate.compozed.othello.domain.user.User;
 import com.allstate.compozed.othello.repository.UserRepository;
 import com.sendgrid.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by localadmin on 4/3/17.
@@ -18,14 +24,19 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class OthelloController {
 
     UserRepository userRepository;
 
+RowRepository rowRepository;
+    GameBoardRepository gameBoardRepository;
+
     @Autowired
-    public UserController (UserRepository userRepository)
+    public OthelloController(UserRepository userRepository, GameBoardRepository gameBoardRepository,RowRepository rowRepository)
     {
         this.userRepository = userRepository;
+        this.gameBoardRepository = gameBoardRepository;
+        this.rowRepository = rowRepository;
     }
 
     @PostMapping("/")
@@ -95,9 +106,7 @@ public class UserController {
                 othelloResponse.setStatusCode(HttpStatus.valueOf(response.statusCode));
                 othelloResponse.setMessage("Password recover email failed to be sent.");
             }
-        }
-        else
-        {
+        } else {
             othelloResponse.setEmailAddress(user.getEmailAddress());
             othelloResponse.setStatusCode(HttpStatus.NOT_FOUND);
             othelloResponse.setMessage("USER NOT FOUND");
@@ -105,5 +114,72 @@ public class UserController {
 
         return new ResponseEntity<>(othelloResponse,othelloResponse.getStatusCode());
     }
+
+    @ResponseBody
+    @PutMapping("/game/{id}/")
+    public ResponseEntity<GameBoard> saveGameBoard(@RequestBody GameBoard gameBoard, @PathVariable Long id) {
+        GameBoard oldGameBoard = gameBoardRepository.findOne(id);
+
+        gameBoard.setId(oldGameBoard.getId());
+
+        return new ResponseEntity<>(gameBoardRepository.save(gameBoard),HttpStatus.OK);
+    }
+
+
+    @ResponseBody
+    @PostMapping("/{id}/game/")
+    public ResponseEntity<GameBoard> createGameBoard(@PathVariable Long id) {
+
+        User  user = userRepository.findOne(id);
+
+        GameBoard gameBoard = new GameBoard();
+
+        gameBoard.setUser(user);
+
+        Row row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+
+        return new ResponseEntity<>(gameBoardRepository.save(gameBoard),HttpStatus.OK);
+
+    }
+
 
 }

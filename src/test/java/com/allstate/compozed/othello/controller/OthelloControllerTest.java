@@ -1,10 +1,12 @@
 package com.allstate.compozed.othello.controller;
 
-import com.allstate.compozed.othello.domain.User;
+import com.allstate.compozed.othello.domain.game.GameBoard;
+import com.allstate.compozed.othello.domain.game.Row;
+import com.allstate.compozed.othello.domain.user.User;
+import com.allstate.compozed.othello.repository.GameBoardRepository;
 import com.allstate.compozed.othello.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,13 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -30,11 +35,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class OthelloControllerTest {
 
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    GameBoardRepository gameBoardRepository;
 
     @Autowired
     MockMvc mockMvc;
@@ -81,6 +89,8 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testRecoverPasswordSuccessful() throws Exception {
         userRepository.save(user);
         MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
@@ -91,6 +101,8 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testRecoverPasswordFailed() throws Exception {
         userRepository.save(user);
         MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
@@ -101,6 +113,8 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testLogin() throws Exception {
 
         userRepository.save(user);
@@ -112,6 +126,8 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testLoginFailed() throws Exception {
         userRepository.save(user);
         MockHttpServletRequestBuilder request = post("/user/login/").contentType(MediaType.APPLICATION_JSON)
@@ -120,4 +136,48 @@ public class UserControllerTest {
         this.mockMvc.perform(request)
                 .andExpect(status().isUnauthorized());
     }
+
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void testSaveGameBoard() throws Exception {
+//        userRepository.save(user);
+//        GameBoard gameBoard = new GameBoard();
+//        Row row = new Row();
+//
+//
+//        row.setRow("X,X,X,X,X,X,X,X");
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.getRows().add(row);
+//        gameBoard.setUser(user);
+//        gameBoardRepository.save(gameBoard);
+//
+//        System.out.println(gameBoardRepository.findAll().spliterator().getExactSizeIfKnown());
+//        MockHttpServletRequestBuilder request = put("/user/" + user.getId() + "/game/").contentType(MediaType.APPLICATION_JSON)
+//                .content("");
+//
+//        this.mockMvc.perform(request)
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.row[0]", equalTo("X,X,X,X,X,X,X,X")));
+//
+//    }
+
+
+
+
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void testSaveGameBoardUsingGameID() throws Exception {
+//        userRepository.save(user);
+//        MockHttpServletRequestBuilder request = post("/user/"+user.getId()+"/game/").contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"thiswillfail\"}");
+//
+//    }
 }

@@ -1,6 +1,6 @@
 package com.allstate.compozed.othello.repository;
 
-import com.allstate.compozed.othello.domain.User;
+import com.allstate.compozed.othello.domain.user.User;
 import org.springframework.data.repository.CrudRepository;
 
 /**
