@@ -1,6 +1,10 @@
-package com.allstate.compozed.othello.domain;
+package com.allstate.compozed.othello.domain.user;
+
+import com.allstate.compozed.othello.domain.game.GameBoard;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by localadmin on 4/3/17.
@@ -18,6 +22,8 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<GameBoard> gameBoardList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -41,5 +47,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<GameBoard> getGameBoardList() {
+        return gameBoardList;
+    }
+
+    public void setGameBoardList(List<GameBoard> gameBoardList) {
+        this.gameBoardList = gameBoardList;
     }
 }
