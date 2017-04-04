@@ -137,36 +137,103 @@ public class OthelloControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void testSaveGameBoard() throws Exception {
-//        userRepository.save(user);
-//        GameBoard gameBoard = new GameBoard();
-//        Row row = new Row();
-//
-//
-//        row.setRow("X,X,X,X,X,X,X,X");
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.getRows().add(row);
-//        gameBoard.setUser(user);
-//        gameBoardRepository.save(gameBoard);
-//
-//        System.out.println(gameBoardRepository.findAll().spliterator().getExactSizeIfKnown());
-//        MockHttpServletRequestBuilder request = put("/user/" + user.getId() + "/game/").contentType(MediaType.APPLICATION_JSON)
-//                .content("");
-//
-//        this.mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.row[0]", equalTo("X,X,X,X,X,X,X,X")));
-//
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testSaveGameBoard() throws Exception {
+        userRepository.save(user);
+
+        GameBoard gameBoard = new GameBoard();
+
+        gameBoard.setUser(user);
+
+        Row row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+        gameBoard.getRowList().add(row);
+
+        row = new Row();
+        row.setRow("X,X,X,X,X,X,X,X");
+        row.setGameBoard(gameBoard);
+
+        gameBoard.getRowList().add(row);
+
+        gameBoardRepository.save(gameBoard);
+
+        MockHttpServletRequestBuilder request = put("/user/game/" + gameBoard.getId() + "/").contentType(MediaType.APPLICATION_JSON)
+                .content("{" +
+                        "  \"rows\": [" +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 28" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 29" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 30" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,LARRY,X,ZACH,X,X,X\"," +
+                        "      \"id\": 31" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 32" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 33" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 34" +
+                        "    }," +
+                        "    {" +
+                        "      \"row\": \"X,X,X,X,X,X,X,X\"," +
+                        "      \"id\": 35" +
+                        "    }" +
+                        "  ]," +
+                        "  \"id\": 7" +
+                        "}");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rows[3].row", equalTo("X,X,LARRY,X,ZACH,X,X,X")));
+
+    }
 
 
 
