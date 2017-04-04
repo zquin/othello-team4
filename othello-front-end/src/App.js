@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import {FormField, Form} from 'react-pattern-library';
 import './App.css';
+import RegisterUser from "./RegisterUser";
+//import BusinessLogic from "./BusinessLogic";
 
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+
   render() {
     return (
       <div className="App">
-        <Form>
-          <FormField
-            id="email-box"
-            label="email"
-            required />
-          <FormField
-            id="password-box"
-            label="password"
-            type="password"
-            required />
-          <button className="c-btn c-btn--secondary" id="register-button">Register</button>
-        </Form>
+        <RegisterUser />
       </div>
     );
   }

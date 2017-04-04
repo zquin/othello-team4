@@ -11,6 +11,7 @@ public class OthelloApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		
 	}
 
 }
