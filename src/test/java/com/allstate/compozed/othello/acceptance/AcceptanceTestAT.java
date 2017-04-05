@@ -22,19 +22,12 @@ public class AcceptanceTestAT extends FluentTest {
     @Test
     public void testHomePage() {
         goTo("http://localhost:" + this.port + "/");
-        assertThat($("#wired").text()).isEqualTo("Wired");
-    }
-
-    @Test
-    public void testSpacesListEmptyForAddSpaceButton() {
-        goTo("http://localhost:" + this.port + "/");
-        assertThat($("#spacesList").text()).isEqualTo("");
-        assertThat($("#addSpaceButton").text()).isEqualTo("Add Space");
-    }
-
-    @Test
-    public void testAddSpaceButtonClicked() {
-        goTo("http://localhost:" + this.port + "/");
-        assertThat($("#createSpaceContainer").tagName()).isEqualTo("form");
+        assertThat($(".App").present());
+        $("#email-box").fill().with("zquin@allstate.com");
+        $("#password-box").fill().with("passw0rd");
+        assertThat($("#email-box").value()).isEqualTo("zquin@allstate.com");
+        assertThat($("#password-box").value()).isEqualTo("passw0rd");
+        $("#register-button").click();
+        //await().until(() -> $("#submitted").present());
     }
 }

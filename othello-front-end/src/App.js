@@ -15,10 +15,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        Wired
+
         <RegisterUser />
       </div>
     );
   }
 }
-
 export default App;
