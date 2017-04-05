@@ -41,7 +41,6 @@ RowRepository rowRepository;
 
     @PostMapping("/users")
     public User registerUser(@RequestBody User user) {
-
         User newUser = userRepository.save(user);
 
         try {
