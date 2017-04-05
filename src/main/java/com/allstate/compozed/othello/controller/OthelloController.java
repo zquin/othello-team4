@@ -28,12 +28,10 @@ public class OthelloController {
 
     UserRepository userRepository;
 
-RowRepository rowRepository;
     GameBoardRepository gameBoardRepository;
 
     @Autowired
-    public OthelloController(UserRepository userRepository, GameBoardRepository gameBoardRepository,RowRepository rowRepository)
-    {
+    public OthelloController(UserRepository userRepository, GameBoardRepository gameBoardRepository, RowRepository rowRepository) {
         this.userRepository = userRepository;
         this.gameBoardRepository = gameBoardRepository;
         this.rowRepository = rowRepository;
@@ -46,9 +44,7 @@ RowRepository rowRepository;
 
         try {
             EmailUtil.sendEmail("Welcome to Othello Team 4", "Thank you for registering for Othello made by Team 4", newUser.getEmailAddress());
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return newUser;
@@ -63,20 +59,18 @@ RowRepository rowRepository;
 
         User loggedInUser = userRepository.findByEmailAddress(user.getEmailAddress());
 
-        if(loggedInUser.getEmailAddress() == null) {
+        if (loggedInUser.getEmailAddress() == null) {
             othelloResponse.setEmailAddress(user.getEmailAddress());
             othelloResponse.setStatusCode(HttpStatus.NOT_FOUND);
             othelloResponse.setMessage("USER NOT FOUND");
         } else if (user.getPassword().equals(loggedInUser.getPassword())) {
             othelloResponse.setStatusCode(HttpStatus.OK);
             othelloResponse.setEmailAddress(loggedInUser.getEmailAddress());
-        }
-        else
-        {
+        } else {
             othelloResponse.setEmailAddress(user.getEmailAddress());
             othelloResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(othelloResponse,othelloResponse.getStatusCode());
+        return new ResponseEntity<>(othelloResponse, othelloResponse.getStatusCode());
 
     }
 
@@ -92,12 +86,10 @@ RowRepository rowRepository;
             Response response = null;
             try {
                 response = EmailUtil.sendEmail("Password Recover", String.format("Your password is below <br/>%n %s", loggedInUser.getPassword()), loggedInUser.getEmailAddress());
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            if(response.statusCode == 202) {
+            if (response.statusCode == 202) {
                 othelloResponse.setEmailAddress(user.getEmailAddress());
                 othelloResponse.setStatusCode(HttpStatus.valueOf(response.statusCode));
                 othelloResponse.setMessage("Password recovery email sent successfully.");
@@ -112,56 +104,55 @@ RowRepository rowRepository;
             othelloResponse.setMessage("USER NOT FOUND");
         }
 
-        return new ResponseEntity<>(othelloResponse,othelloResponse.getStatusCode());
+        return new ResponseEntity<>(othelloResponse, othelloResponse.getStatusCode());
     }
 
     @ResponseBody
     @PutMapping("/games/{id}/")
     public ResponseEntity<GameBoard> saveGameBoard(@RequestBody GameBoard gameBoard, @PathVariable Long id) {
         GameBoard oldGameBoard = gameBoardRepository.findOne(id);
-        for (Row row : gameBoard.getRowList())
-        {
+        for (Row row : gameBoard.getRowList()) {
             row.setGameBoard(oldGameBoard);
         }
         oldGameBoard.setRowList(gameBoard.getRowList());
-        return new ResponseEntity<>(gameBoardRepository.save(oldGameBoard),HttpStatus.OK);
+        return new ResponseEntity<>(gameBoardRepository.save(oldGameBoard), HttpStatus.OK);
     }
 
 
     @GetMapping("/games/{gameId}/")
     public ResponseEntity<GameBoard> getGameBoard(@PathVariable Long gameId) {
-        return new ResponseEntity<>(gameBoardRepository.findOne(gameId),HttpStatus.OK);
+        return new ResponseEntity<>(gameBoardRepository.findOne(gameId), HttpStatus.OK);
     }
 
     /**
      * web service which return a list of game boards for the specified user.
+     *
      * @param userId
      * @return list of game boards
      */
     @GetMapping("/{userId}/games/")
     public ResponseEntity<List<GameBoard>> getGameBoardsForUser(@PathVariable Long userId) {
-        return new ResponseEntity<>(gameBoardRepository.findAllByUserId(userId),HttpStatus.OK);
+        return new ResponseEntity<>(gameBoardRepository.findAllByUserId(userId), HttpStatus.OK);
     }
 
     @ResponseBody
     @PostMapping("/users/{id}/games/")
     public ResponseEntity<GameBoard> createGameBoard(@PathVariable Long id) {
 
-        User  user = userRepository.findOne(id);
+        User user = userRepository.findOne(id);
 
         GameBoard gameBoard = new GameBoard();
 
         gameBoard.setUser(user);
 
         Row row = new Row();
-        for (int i=0; i<8 ;i++)
-        {
+        for (int i = 0; i < 8; i++) {
             row.setRow("X,X,X,X,X,X,X,X");
             row.setGameBoard(gameBoard);
             gameBoard.getRowList().add(row);
             row = new Row();
         }
 
-        return new ResponseEntity<>(gameBoardRepository.save(gameBoard),HttpStatus.OK);
+        return new ResponseEntity<>(gameBoardRepository.save(gameBoard), HttpStatus.OK);
     }
 }
