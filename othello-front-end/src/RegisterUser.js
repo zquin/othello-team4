@@ -5,17 +5,15 @@ class RegisterUser extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {hello:"world"};
-    this.registerUser = this.registerUser.bind(this)
   }
 
-  registerUser() {
-    console.log('did I hit')
+  registerUser(e, details) {
+    console.log('did I hit', details)
     return true
   }
   render() {
     return (
-      <Form>
+      <Form onSubmit={this.registerUser}>
         <FormField
           id="email-box"
           label="email"
@@ -25,7 +23,7 @@ class RegisterUser extends Component {
           label="password"
           type="password"
           required />
-        <button className="c-btn c-btn--secondary" type='submit' id="register-button" onClick={this.registerUser}>Submit</button>
+        <button className="c-btn c-btn--secondary" type='submit' id="register-button">Submit</button>
       </Form>
     )
   }

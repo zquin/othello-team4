@@ -10,8 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class OthelloApplicationTests {
 
 	@Test
-	public void contextLoads() {
-		
+	public void registerUser() {
+
 	}
 
 }
