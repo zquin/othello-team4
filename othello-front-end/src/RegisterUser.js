@@ -4,16 +4,20 @@ import {FormField, Form} from 'react-pattern-library';
 class RegisterUser extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+
+    //bindings
+    //this.registerUser = this.registerUser.bind(this);
   }
 
-  registerUser(e, details) {
-    console.log('did I hit', details)
+  registerUser(event) {
+    console.log('did I hit', event)
     return true
   }
+
   render() {
     return (
-      <Form onSubmit={this.registerUser}>
+      <Form id='registration-form' onSubmit={ this.registerUser }>
         <FormField
           id="email-box"
           label="email"

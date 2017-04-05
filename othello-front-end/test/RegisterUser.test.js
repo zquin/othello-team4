@@ -10,34 +10,39 @@ import sinon from 'sinon';
 
 // let registerUser, div, regUser;
 // beforeEach(() => {
-//   // div = document.createElement('div');
+//   div = document.createElement('div');
 //   registerUser = jest.fn()
-//   sinon.stub(RegisterUser.prototype, 'registerUser',  registerUser);
-//   // regUser = shallow(<RegisterUser />, div);
-//   regUser = ReactTestUtils.renderIntoDocument(<RegisterUser />)
-//   // regUser.registerUser = registerUser
+//
+//   regUser = shallow(<RegisterUser />, div);
+//
 // });
 
-xit('renders the registration page', () => {
+it('renders the registration page', () => {
+
+  const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
+  const div = document.createElement('div');
+  const regUser = shallow(<RegisterUser />, div);
+
   expect(regUser.find('#email-box')).toHaveLength(1);
   expect(regUser.find('#password-box')).toHaveLength(1);
   expect(regUser.find('#register-button')).toHaveLength(1);
 });
 
-xit('registerUser function is called', () => {
-  let buttton = ReactTestUtils.findRenderedDOMComponentWithClass(regUser, 'c-btn--secondary')
-  ReactTestUtils.Simulate.click(buttton);
-console.log('[[[[[[[[[[[[[[[[[[', regUser)
- // expect(registerUser.resgisterMethod).toHaveBeenCalledTimes(1)
-  expect(registerUser).toBeCalled()
+it('registerUser function is called', () => {
+    const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
+    const div = document.createElement('div');
+    const regUser = shallow(<RegisterUser user={expectedUser} />, div);
+
+    let fakeRegisterUser = jest.fn();
+    let bound = fakeRegisterUser.bind(regUser);
+    bound();
+
+    regUser.props.registerUser = fakeRegisterUser;
+    regUser.find('#registration-form').simulate('submit');
+    expect(fakeRegisterUser).toHaveBeenCalledTimes(1);
 });
 
-xit('registerUser function is called', () => {
-  let registerUser = jest.fn()
-  sinon.stub(regUser.prototype, 'registerUser',  registerUser);
-})
-
-it('testing shallow with register user on app', () => {
+xit('testing shallow with register user on app', () => {
   // const div = document.createElement('div');
   // const app = shallow(<App />, div);
   // const registerUser = app.find(RegisterUser.name);
