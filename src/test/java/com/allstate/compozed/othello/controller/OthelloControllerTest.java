@@ -66,7 +66,7 @@ public class OthelloControllerTest {
     @Transactional
     @Rollback
     public void testRegisterUserEndpoint() throws Exception {
-        MockHttpServletRequestBuilder request = post("/user/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"allstate\"}");
 
         this.mockMvc.perform(request)
@@ -79,7 +79,7 @@ public class OthelloControllerTest {
     @Transactional
     @Rollback
     public void testRegisterUserDatabase() throws Exception {
-        MockHttpServletRequestBuilder request = post("/user/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"allstate\"}");
 
         this.mockMvc.perform(request)
@@ -94,7 +94,7 @@ public class OthelloControllerTest {
     @Rollback
     public void testRecoverPasswordSuccessful() throws Exception {
         userRepository.save(user);
-        MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/recover/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\"}");
 
         this.mockMvc.perform(request)
@@ -106,7 +106,7 @@ public class OthelloControllerTest {
     @Rollback
     public void testRecoverPasswordFailed() throws Exception {
         userRepository.save(user);
-        MockHttpServletRequestBuilder request = post("/user/recover/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/recover/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"madkk@allstate.com\"}");
 
         this.mockMvc.perform(request)
@@ -119,7 +119,7 @@ public class OthelloControllerTest {
     public void testLogin() throws Exception {
 
         userRepository.save(user);
-        MockHttpServletRequestBuilder request = post("/user/login/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/login/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"allstate\"}");
 
         this.mockMvc.perform(request)
@@ -131,7 +131,7 @@ public class OthelloControllerTest {
     @Rollback
     public void testLoginFailed() throws Exception {
         userRepository.save(user);
-        MockHttpServletRequestBuilder request = post("/user/login/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = post("/users/login/").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"thiswillfail\"}");
 
         this.mockMvc.perform(request)
@@ -163,7 +163,7 @@ public class OthelloControllerTest {
 
         gameBoardRepository.save(gameBoard);
 
-        MockHttpServletRequestBuilder request = put("/game/" + gameBoard.getId() + "/").contentType(MediaType.APPLICATION_JSON)
+        MockHttpServletRequestBuilder request = put("/games/" + gameBoard.getId() + "/").contentType(MediaType.APPLICATION_JSON)
                 .content("{" +
                         "  \"rows\": [" +
                         "    {" +
@@ -231,7 +231,7 @@ public class OthelloControllerTest {
 
         gameBoardRepository.save(gameBoard);
 
-        MockHttpServletRequestBuilder request = get("/game/" + gameBoard.getId() + "/")
+        MockHttpServletRequestBuilder request = get("/games/" + gameBoard.getId() + "/")
                 .contentType(MediaType.APPLICATION_JSON);
 
         this.mockMvc.perform(request)
