@@ -18,8 +18,6 @@ import sinon from 'sinon';
 // });
 
 it('renders the registration page', () => {
-
-  const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
   const div = document.createElement('div');
   const regUser = shallow(<RegisterUser />, div);
 
@@ -29,7 +27,6 @@ it('renders the registration page', () => {
 });
 
 it('registerUser function is called', () => {
-    const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
     const div = document.createElement('div');
     let fakeRegisterUser = sinon.stub();
 

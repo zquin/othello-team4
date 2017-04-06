@@ -25,7 +25,8 @@ class RegisterUser extends Component {
                     label="password"
                     type="password"
                     required />
-                <button className="c-btn c-btn--secondary" type='submit' id="register-button" onClick={ () => this.props.onRegister(this.state) }>Submit</button>
+                <button className="c-btn c-btn--secondary" type='submit' id="register-button" onClick={ () => this.props.onRegister(this.state) }>Register</button>
+                <button className="c-btn c-btn--secondary" type='submit' id="login-button" onClick={ () => this.props.onLogin(this.state) }>Login</button>
             </Form>
         )
 

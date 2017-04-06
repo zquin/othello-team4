@@ -24,6 +24,7 @@ class App extends Component {
         }
         this.changeColor = this.changeColor.bind(this)
         this.registerUser = this.registerUser.bind(this)
+        this.loginUser = this.loginUser.bind(this)
     }
 
     changeColor(rowId, cellId) {
@@ -44,6 +45,10 @@ class App extends Component {
         this.sendUser(userInfo)
     }
 
+    loginUser(userInfo) {
+        this.sendLoginUser(userInfo)
+    }
+
     sendUser(user){
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -57,10 +62,23 @@ class App extends Component {
             });
     }
 
+    sendLoginUser(user){
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var request = { method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(user)};
+        return fetch('/users/login/', request)
+            .then((response) => {
+                return response;
+            });
+    }
+
     render() {
         return (
             <div className="App">
-                <RegisterUser onRegister={this.registerUser} />
+                <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser} />
                 <GameBoard changeColor={this.changeColor} gameBoard={this.state.gameBoard}/>
             </div>
         );

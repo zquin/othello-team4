@@ -24,3 +24,14 @@ it('registers a new user', () => {
     // Unmock.
     fetchMock.restore();
 })
+
+it('login a new user', () => {
+    let user = {emailAddress: "zquinn@allstate.com", password: ""};
+    fetchMock.post('/users/login/', user);
+
+    app.instance().sendLoginUser(user).then((response) => {
+        expect(response.status).toBe(200);
+    })
+    // Unmock.
+    fetchMock.restore();
+})
