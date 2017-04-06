@@ -27,16 +27,29 @@
 {
   width: 800px;
   height: 306px;
-  background-color: darkgreen;
-  /*border: 1px solid #ccc;*/
 }
-.square div div
-{
+.cell-block {
   float: left;
   height: 100px;
   width: 100px;
   outline: 1px solid #aaa;
   text-align: center;
   font-size: 6vw;
-  background-color: darkgreen;
+  background-color: seagreen;
+  padding: 5px;
+}
+
+.B {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  background-color: black;
+
+}
+
+.W {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  background-color: white;
 }

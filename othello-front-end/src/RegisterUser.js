@@ -9,12 +9,6 @@ class RegisterUser extends Component {
             email: '',
             password: ''
         }
-
-        this.sendInfo = this.sendInfo.bind(this)
-    }
-
-    sendInfo () {
-        this.props.onRegister(this.state)
     }
 
     render() {
@@ -31,7 +25,7 @@ class RegisterUser extends Component {
                     label="password"
                     type="password"
                     required />
-                <button className="c-btn c-btn--secondary" type='submit' id="register-button" onClick={ this.sendInfo }>Submit</button>
+                <button className="c-btn c-btn--secondary" type='submit' id="register-button" onClick={ () => this.props.onRegister(this.state) }>Submit</button>
             </Form>
         )
 
