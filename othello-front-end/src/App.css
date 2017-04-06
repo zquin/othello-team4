@@ -27,10 +27,9 @@
 {
   width: 800px;
   height: 306px;
-  background-color: darkgreen;
   /*border: 1px solid #ccc;*/
 }
-.square div div
+.square div
 {
   float: left;
   height: 100px;
@@ -38,5 +37,20 @@
   outline: 1px solid #aaa;
   text-align: center;
   font-size: 6vw;
-  background-color: darkgreen;
+  /*background-color: darkgreen;*/
 }
+
+.circleBlack {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+}
+
+.circleGrey {
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  background-color: darkgrey;
+}
+
