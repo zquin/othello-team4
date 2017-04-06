@@ -31,13 +31,12 @@ class App extends Component {
         let newGameBoard = this.state.gameBoard
 
         let rowArr = newGameBoard[rowId].row.split(",")
-
-        this.state.blacksTurn ? rowArr[cellId] = "B" : rowArr[cellId] = "W"
-
-        newGameBoard[rowId].row = rowArr.toString()
-        state.gameBoard = newGameBoard
-        state.blacksTurn = !this.state.blacksTurn
-
+        if(rowArr[cellId] === ("x")) {
+            this.state.blacksTurn ? rowArr[cellId] = "B" : rowArr[cellId] = "W"
+            newGameBoard[rowId].row = rowArr.toString()
+            state.gameBoard = newGameBoard
+            state.blacksTurn = !this.state.blacksTurn
+        }
         this.setState(state)
     }
 
