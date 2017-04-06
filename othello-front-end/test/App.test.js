@@ -24,7 +24,17 @@ describe('Full Application testing', ()=> {
         fetchMock.restore();
     });
 
-    it('changeColor function gets called', () => {
+    xit('allows a player to place piece ', () => {
+        let state = app.instance().state;
+        let startValue = state.gameBoard[3].row[6];
+        expect(startValue).toBe('W');
+        let nextPlace = state.gameBoard[2].row[6]
+        expect(nextPlace).toBe('x')
+        app.instance().playerTakeTurn(2, 3)
+        expect(state.gameBoard[2].row[6]).toBe('B')
+    })
+
+    xit('changeColor function gets called', () => {
         let state = app.instance().state;
         let value = state.gameBoard[0].row[0];
         expect(value).toBe('x');
@@ -33,15 +43,24 @@ describe('Full Application testing', ()=> {
         expect(newValue).toBe('B')
     });
 
+    xit('disallows a player to place piece ', () => {
+        let state = app.instance().state;
+        let startValue = state.gameBoard[4].row[6];
+        expect(startValue).toBe('B');
+        let nextPlace = state.gameBoard[5].row[6]
+        expect(nextPlace).toBe('x')
+        app.instance().playerTakeTurn(5, 3)
+        expect(state.gameBoard[5].row[6]).toBe('x')
+    })
+
+    it('isLegal function checks the players move is legal and returns true of false', () => {
+        let state = app.instance().state;
+        let startValue = state.gameBoard[3].row[6];
+        expect(startValue).toBe('W');
+        let nextPlace = state.gameBoard[2].row[6]
+        expect(nextPlace).toBe('x')
+
+        expect(app.instance().isLegal(2,3)).toBe(true)
+    })
+
 })
-
-
-
-// const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
-// const div = document.createElement('div');
-// let fakeRegisterUser = sinon.stub();
-//
-// const regUser = shallow(<RegisterUser onRegister={fakeRegisterUser} />, div);
-//
-// regUser.find('#register-button').simulate('click');
-// expect(fakeRegisterUser.calledOnce).toBe(true);
