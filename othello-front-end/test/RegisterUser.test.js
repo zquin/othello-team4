@@ -1,21 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../src/App';
 import {shallow} from 'enzyme';
 import RegisterUser from '../src/RegisterUser'
-import ReactTestUtils from 'react-addons-test-utils';
 import sinon from 'sinon';
 
-// import fetchMock from 'fetch-mock';
-
-// let registerUser, div, regUser;
-// beforeEach(() => {
-//   div = document.createElement('div');
-//   registerUser = jest.fn()
-//
-//   regUser = shallow(<RegisterUser />, div);
-//
-// });
 describe('User Registration testing', ()=> {
     it('renders the registration page', () => {
 

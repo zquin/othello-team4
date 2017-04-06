@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from '../src/App';
 import {shallow} from 'enzyme';
 import fetchMock from 'fetch-mock';
@@ -22,7 +21,27 @@ describe('Full Application testing', ()=> {
         app.instance().sendUser(user).then((response) => {
             expect(response.status).toBe(200);
         })
-        // Unmock.
         fetchMock.restore();
     });
-});
+
+    it('changeColor function gets called', () => {
+        let state = app.instance().state;
+        let value = state.gameBoard[0].row[0];
+        expect(value).toBe('x');
+        app.instance().changeColor(0, 0)
+        let newValue = state.gameBoard[0].row[0]
+        expect(newValue).toBe('B')
+    });
+
+})
+
+
+
+// const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
+// const div = document.createElement('div');
+// let fakeRegisterUser = sinon.stub();
+//
+// const regUser = shallow(<RegisterUser onRegister={fakeRegisterUser} />, div);
+//
+// regUser.find('#register-button').simulate('click');
+// expect(fakeRegisterUser.calledOnce).toBe(true);
