@@ -22,3 +22,21 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.square
+{
+  width: 800px;
+  height: 306px;
+  background-color: darkgreen;
+  /*border: 1px solid #ccc;*/
+}
+.square div div
+{
+  float: left;
+  height: 100px;
+  width: 100px;
+  outline: 1px solid #aaa;
+  text-align: center;
+  font-size: 6vw;
+  background-color: darkgreen;
+}
