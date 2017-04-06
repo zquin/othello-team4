@@ -26,3 +26,4 @@ nbdist/
 .nb-gradle/sendgrid.env
 /out/
 sendgrid.env
+/src/main/resources
