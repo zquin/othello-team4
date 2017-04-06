@@ -3,15 +3,7 @@ import {FormField, Form} from 'react-pattern-library';
 
 class RegisterUser extends Component {
 
-  constructor(props) {
-    super(props);
-
-    //bindings
-    //this.registerUser = this.registerUser.bind(this);
-  }
-
   registerUser(event) {
-    console.log('did I hit', event)
     return true
   }
 

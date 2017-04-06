@@ -27,7 +27,6 @@
 {
   width: 800px;
   height: 306px;
-  /*border: 1px solid #ccc;*/
 }
 .cell-block {
   float: left;
@@ -36,19 +35,21 @@
   outline: 1px solid #aaa;
   text-align: center;
   font-size: 6vw;
-  /*background-color: darkgreen;*/
+  background-color: seagreen;
+  padding: 5px;
 }
 
 .B {
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background-color: black;
+
 }
 
 .W {
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  background-color: darkgrey;
+  width: 90px;
+  height: 90px;
+  background-color: white;
 }

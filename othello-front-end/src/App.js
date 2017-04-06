@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import {FormField, Form} from 'react-pattern-library';
 import './App.css';
 import RegisterUser from "./RegisterUser";
 import GameBoard from "./GameBoard";
-//import BusinessLogic from "./BusinessLogic";
 
 
 class App extends Component {
@@ -14,40 +12,34 @@ class App extends Component {
 
         this.state = {
             gameBoard: [
-                {row: "x,x,x,B,x,x,x,x"},
-                {row: "x,x,x,B,x,x,x,x"},
-                {row: "x,x,x,B,x,x,W,x"},
-                {row: "x,x,x,B,x,x,x,x"},
-                {row: "x,x,x,B,x,x,W,x"},
-                {row: "x,x,x,B,x,x,x,x"},
-                {row: "x,x,x,B,x,W,x,x"},
-                {row: "x,x,x,B,x,x,x,x"}
+                {row: "x,x,x,x,x,x,x,x"},
+                {row: "x,x,x,x,x,x,x,x"},
+                {row: "x,x,x,x,x,x,x,x"},
+                {row: "x,x,x,W,B,x,x,x"},
+                {row: "x,x,x,B,W,x,x,x"},
+                {row: "x,x,x,x,x,x,x,x"},
+                {row: "x,x,x,x,x,x,x,x"},
+                {row: "x,x,x,x,x,x,x,x"}
             ],
-
-            color: ""
-
+            blacksTurn: true
         }
-
-
+        this.changeColor = this.changeColor.bind(this)
     }
 
-    changeColor (rowId, cellId) {
-        //console.log("rowId = " + rowId+ " cellId " + cellId)
-       //  let state = this.state
-       // // console.log(state.color);
-       //  if (this.state.blacksTurn) {
-       //      state.color="circleBlack"
-       //  } else {
-       //      state.color="circleGrey"
-       //  }
-       //
-       //  state.blacksTurn = !this.state.blacksTurn
-       //
-       //  this.setState(state)
+    changeColor(rowId, cellId) {
+        let state = this.state
+        let newGameBoard = this.state.gameBoard
+
+        let rowArr = newGameBoard[rowId].row.split(",")
+
+        this.state.blacksTurn ? rowArr[cellId] = "B" : rowArr[cellId] = "W"
+
+        newGameBoard[rowId].row = rowArr.toString()
+        state.gameBoard = newGameBoard
+        state.blacksTurn = !this.state.blacksTurn
+
+        this.setState(state)
     }
-
-
-
 
 
     render() {

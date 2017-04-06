@@ -9,12 +9,10 @@ export default class GameBoard extends Component {
     }
 
     render() {
-
         return (
             <div className="square" id="gameBoardContainer">
               {
                 this.props.gameBoard.map((x, i) => {
-                  console.log("gameBoard x = " + x.row + " i = "+ i)
                   return (
                     <div>
                       <Row id={i} changeColor={this.props.changeColor} row={x.row}/>
@@ -25,23 +23,3 @@ export default class GameBoard extends Component {
         )
     }
 }
-
-
-
-// var rows = [];
-//
-// for (let i = 0; i < 8; i++) {
-//     console.log(i);
-//     rows.push(<Row id="row{i}"/>)
-// }
-// return (
-//     <div className="square">
-//         {rows}
-//     </div>
-// )
-//
-// return (
-//     <div className="square">
-//         {rows}
-//     </div>
-// )
