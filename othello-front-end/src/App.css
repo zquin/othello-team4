@@ -29,8 +29,7 @@
   height: 306px;
   /*border: 1px solid #ccc;*/
 }
-.square div
-{
+.cell-block {
   float: left;
   height: 100px;
   width: 100px;
@@ -42,15 +41,14 @@
 
 .B {
   border-radius: 50%;
-  width: 10px;
-  height: 10px;
+  width: 100px;
+  height: 100px;
   background-color: black;
 }
 
 .W {
   border-radius: 50%;
-  width: 5px;
-  height: 5px;
+  width: 100px;
+  height: 100px;
   background-color: darkgrey;
 }
-

@@ -8,22 +8,19 @@ export default class GameBoard extends Component {
         super(props);
     }
 
-
-    get buildGameBoard() {
-        return (
-            <div className="square">
-                {this.props.gameBoard.map((x, i) => {
-                    console.log("gameBoard x = " + x.row + " i = "+ i)
-                    return <Row id={i} changeColor={this.props.changeColor} row={x.row}/>
-                })}
-            </div>
-        )
-    }
-
     render() {
+
         return (
             <div id="gameBoardContainer">
-                {this.buildGameBoard}
+              {
+                this.props.gameBoard.map((x, i) => {
+                  console.log("gameBoard x = " + x.row + " i = "+ i)
+                  return (
+                    <div className="square">
+                      <Row id={i} changeColor={this.props.changeColor} row={x.row}/>
+                    </div>)
+                })
+              }
             </div>
         )
     }

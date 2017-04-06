@@ -40,9 +40,9 @@ export default class Row extends Component {
         return (
             <div id="rowComponent">
                 {this.props.row.split(",").map((cell, i) => {
-                    return (<div id="cell" onClick={() => this.props.changeColor(this.props.id, i)}>
+                    return (<span className="cell-block" onClick={() => this.props.changeColor(this.props.id, i)}>
                                 <div className={cell}></div>
-                            </div>)
+                            </span>)
                 })}
             </div>
         )
