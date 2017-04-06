@@ -6,26 +6,26 @@ export default class Row extends Component {
     constructor(props) {
         super(props);
 
-        this.changeColor = this.changeColor.bind(this);
+        // this.changeColor = this.changeColor.bind(this);
         this.state = {
             color: "",
             blacksTurn: true
         }
     }
 
-    changeColor () {
-        let state = this.state
-        console.log(state.color);
-        if (this.state.blacksTurn) {
-            state.color="circleBlack"
-        } else {
-            state.color="circleGrey"
-        }
-
-        state.blacksTurn = !this.state.blacksTurn
-
-        this.setState(state)
-    }
+    // changeColor () {
+    //     let state = this.state
+    //     console.log(state.color);
+    //     if (this.state.blacksTurn) {
+    //         state.color="circleBlack"
+    //     } else {
+    //         state.color="circleGrey"
+    //     }
+    //
+    //     state.blacksTurn = !this.state.blacksTurn
+    //
+    //     this.setState(state)
+    // }
 
     //
     // flipBlack () {
@@ -39,15 +39,25 @@ export default class Row extends Component {
     render() {
         return (
             <div id="rowComponent">
-                <div id="cell0" onClick={this.changeColor}><Circle color={this.state.color}/></div>
-                <div id="cell1" onClick={this.changeColor}><Circle/></div>
-                <div id="cell2" onClick={this.changeColor}><Circle/></div>
-                <div id="cell3" onClick={this.changeColor}><Circle/></div>
-                <div id="cell4" onClick={this.changeColor}><Circle/></div>
-                <div id="cell5" onClick={this.changeColor}><Circle/></div>
-                <div id="cell6" onClick={this.changeColor}><Circle/></div>
-                <div id="cell7" onClick={this.changeColor}><Circle/></div>
+                {this.props.row.split(",").map((cell, i) => {
+                    return (<div id="cell" onClick={() => this.props.changeColor(this.props.id, i)}>
+                                <div className={cell}></div>
+                            </div>)
+                })}
             </div>
         )
     }
 }
+
+
+//
+// <div id="cell0" onClick={this.changeColor}><div className={this.state.color}>
+// </div></div>
+// <div id="cell1" onClick={this.changeColor}><div className={this.state.color}>
+// </div></div>
+// <div id="cell2" onClick={this.changeColor}><Circle/></div>
+// <div id="cell3" onClick={this.changeColor}><Circle/></div>
+// <div id="cell4" onClick={this.changeColor}><Circle/></div>
+// <div id="cell5" onClick={this.changeColor}><Circle/></div>
+// <div id="cell6" onClick={this.changeColor}><Circle/></div>
+// <div id="cell7" onClick={this.changeColor}><Circle/></div>

@@ -40,14 +40,14 @@
   /*background-color: darkgreen;*/
 }
 
-.circleBlack {
+.B {
   border-radius: 50%;
   width: 10px;
   height: 10px;
   background-color: black;
 }
 
-.circleGrey {
+.W {
   border-radius: 50%;
   width: 5px;
   height: 5px;
