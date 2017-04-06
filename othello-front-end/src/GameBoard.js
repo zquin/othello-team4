@@ -11,12 +11,12 @@ export default class GameBoard extends Component {
     render() {
 
         return (
-            <div id="gameBoardContainer">
+            <div className="square" id="gameBoardContainer">
               {
                 this.props.gameBoard.map((x, i) => {
                   console.log("gameBoard x = " + x.row + " i = "+ i)
                   return (
-                    <div className="square">
+                    <div>
                       <Row id={i} changeColor={this.props.changeColor} row={x.row}/>
                     </div>)
                 })
