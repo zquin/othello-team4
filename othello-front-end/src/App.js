@@ -21,11 +21,13 @@ class App extends Component {
                 {row: "x,x,x,x,x,x,x,x"}
             ],
             blacksTurn: true,
-            userId: "-1"
+            userId: "-1",
+            gameId: -1
         }
         this.changeColor = this.changeColor.bind(this)
         this.registerUser = this.registerUser.bind(this)
         this.loginUser = this.loginUser.bind(this)
+        this.saveGame = this.saveGame.bind(this)
     }
 
     changeColor(rowId, cellId) {
@@ -48,6 +50,8 @@ class App extends Component {
 
     loginUser(userInfo) {
         this.sendLoginUser(userInfo)
+        // console.log("We are in logInUser" + this.state.userId);
+
     }
 
     sendUser(user) {
@@ -65,10 +69,48 @@ class App extends Component {
             });
     }
 
+    createGame() {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        console.log("user id in create game = " + this.state.userId)
+        var request = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(this.state.gameBoard)
+        };
+        let url = '/users/' + this.state.userId + '/games/';
+        return fetch(url, request)
+            .then(res => res.json())
+            .then((out) => {
+                let state = this.state;
+                state.gameId = out.id
+                this.setState(state)
+            })
+    }
+
+    saveGame() {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var request = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: JSON.stringify(this.state.gameBoard)
+        };
+        let url = '/games/' + this.state.gameId + '/';
+        return fetch(url, request)
+            .then(res => res.json())
+            .then((out) => {
+                // let state = this.state;
+                // // state.userId = out.userId
+                // return this.setState(state)
+            })
+    }
+
+
     sendLoginUser(user) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log(user)
         var request = {
             method: 'POST',
             headers: myHeaders,
@@ -77,12 +119,14 @@ class App extends Component {
         return fetch('/users/login/', request)
             .then(res => res.json())
             .then((out) => {
-                console.log('Checkout this JSON! ', out);
-                    let state = this.state;
-                    console.log("response out user id = "  + out.userId)
-                    state.userId = out.userId
-                    console.log("state id = " +state.userId)
-                    return this.setState(state)
+                console.log("before state update" + this.state.userId)
+                let state = this.state;
+                state.userId = out.userId
+                console.log("after state update" + state.userId)
+                this.setState(state)
+            }).then( () => {
+                console.log("jfeiwoajfioweajfiowajfoi")
+                this.createGame()
             })
     }
 
@@ -91,6 +135,7 @@ class App extends Component {
             <div className="App">
                 <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser}/>
                 <GameBoard changeColor={this.changeColor} gameBoard={this.state.gameBoard}/>
+                <button onClick={this.saveGame}>Save Game</button>
             </div>
         );
     }
