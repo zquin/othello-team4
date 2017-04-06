@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
  */
 public class OthelloResponse {
 
+    private Long userId;
     private HttpStatus statusCode;
     private String emailAddress;
     private String message;
@@ -34,5 +35,13 @@ public class OthelloResponse {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

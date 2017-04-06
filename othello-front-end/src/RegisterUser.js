@@ -6,7 +6,7 @@ class RegisterUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
+            emailAddress: '',
             password: ''
         }
     }
@@ -15,7 +15,7 @@ class RegisterUser extends Component {
         return (
             <Form id='registration-form'>
                 <FormField
-                    onChange={ (e) => {this.state.email = e.target.value }}
+                    onChange={ (e) => {this.state.emailAddress = e.target.value }}
                     id="email-box"
                     label="email"
                     required />

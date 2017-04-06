@@ -2,6 +2,7 @@ import React from 'react';
 import App from '../src/App';
 import {shallow} from 'enzyme';
 import fetchMock from 'fetch-mock';
+import RegisterUser from '../src/RegisterUser'
 
 let app, div;
 beforeEach(() => {
@@ -35,11 +36,21 @@ describe('Full Application testing', ()=> {
 
 
     it('login a new user', () => {
-        let user = {emailAddress: "zquinn@allstate.com", password: ""};
-        fetchMock.post('/users/login/', user);
+        let user = {emailAddress: "zquin@allstate.com", password: "passw0rd"};
 
-        app.instance().sendLoginUser(user).then((response) => {
+        fetchMock.post('/users', user);
+
+        app.instance().sendUser(user).then((response) => {
             expect(response.status).toBe(200);
+        })
+
+
+        fetchMock.post('/users/login/', user);
+        expect(app.find(RegisterUser.name)).toHaveLength(1)
+        console.log(app.state().userId)
+        app.node._self.sendLoginUser(user).then((response) => {
+            // expect(response.status).toBe(200)
+            console.log(app.state().userId)
         })
         // Unmock.
         fetchMock.restore();

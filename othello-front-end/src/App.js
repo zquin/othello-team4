@@ -20,7 +20,8 @@ class App extends Component {
                 {row: "x,x,x,x,x,x,x,x"},
                 {row: "x,x,x,x,x,x,x,x"}
             ],
-            blacksTurn: true
+            blacksTurn: true,
+            userId: "-1"
         }
         this.changeColor = this.changeColor.bind(this)
         this.registerUser = this.registerUser.bind(this)
@@ -32,7 +33,7 @@ class App extends Component {
         let newGameBoard = this.state.gameBoard
 
         let rowArr = newGameBoard[rowId].row.split(",")
-        if(rowArr[cellId] === ("x")) {
+        if (rowArr[cellId] === ("x")) {
             this.state.blacksTurn ? rowArr[cellId] = "B" : rowArr[cellId] = "W"
             newGameBoard[rowId].row = rowArr.toString()
             state.gameBoard = newGameBoard
@@ -49,36 +50,46 @@ class App extends Component {
         this.sendLoginUser(userInfo)
     }
 
-    sendUser(user){
+    sendUser(user) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        var request = { method: 'POST',
+        var request = {
+            method: 'POST',
             headers: myHeaders,
-            body: JSON.stringify(user)};
+            body: JSON.stringify(user)
+        };
         return fetch('/users', request)
             .then((response) => {
                 return response;
             });
     }
 
-    sendLoginUser(user){
+    sendLoginUser(user) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-
-        var request = { method: 'POST',
+        console.log(user)
+        var request = {
+            method: 'POST',
             headers: myHeaders,
-            body: JSON.stringify(user)};
+            body: JSON.stringify(user)
+        };
         return fetch('/users/login/', request)
-            .then((response) => {
-                return response;
-            });
+            .then(res => res.json())
+            .then((out) => {
+                console.log('Checkout this JSON! ', out);
+                    let state = this.state;
+                    console.log("response out user id = "  + out.userId)
+                    state.userId = out.userId
+                    console.log("state id = " +state.userId)
+                    return this.setState(state)
+            })
     }
 
     render() {
         return (
             <div className="App">
-                <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser} />
+                <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser}/>
                 <GameBoard changeColor={this.changeColor} gameBoard={this.state.gameBoard}/>
             </div>
         );

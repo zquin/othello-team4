@@ -2,12 +2,12 @@ package com.allstate.compozed.othello.controller;
 
 import com.allstate.compozed.othello.domain.game.GameBoard;
 import com.allstate.compozed.othello.domain.game.Row;
-import com.allstate.compozed.othello.repository.GameBoardRepository;
-import com.allstate.compozed.othello.repository.RowRepository;
-import com.allstate.compozed.othello.util.EmailUtil;
 import com.allstate.compozed.othello.domain.response.OthelloResponse;
 import com.allstate.compozed.othello.domain.user.User;
+import com.allstate.compozed.othello.repository.GameBoardRepository;
+import com.allstate.compozed.othello.repository.RowRepository;
 import com.allstate.compozed.othello.repository.UserRepository;
+import com.allstate.compozed.othello.util.EmailUtil;
 import com.sendgrid.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,6 +68,7 @@ RowRepository rowRepository;
         } else if (user.getPassword().equals(loggedInUser.getPassword())) {
             othelloResponse.setStatusCode(HttpStatus.OK);
             othelloResponse.setEmailAddress(loggedInUser.getEmailAddress());
+            othelloResponse.setUserId(loggedInUser.getId());
         }
         else
         {
