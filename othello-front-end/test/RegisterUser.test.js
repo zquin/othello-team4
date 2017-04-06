@@ -16,26 +16,28 @@ import sinon from 'sinon';
 //   regUser = shallow(<RegisterUser />, div);
 //
 // });
+describe('User Registration testing', ()=> {
+    it('renders the registration page', () => {
 
-it('renders the registration page', () => {
+        const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
+        const div = document.createElement('div');
+        const regUser = shallow(<RegisterUser />, div);
 
-  const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
-  const div = document.createElement('div');
-  const regUser = shallow(<RegisterUser />, div);
+        expect(regUser.find('#email-box')).toHaveLength(1);
+        expect(regUser.find('#password-box')).toHaveLength(1);
+        expect(regUser.find('#register-button')).toHaveLength(1);
+    });
 
-  expect(regUser.find('#email-box')).toHaveLength(1);
-  expect(regUser.find('#password-box')).toHaveLength(1);
-  expect(regUser.find('#register-button')).toHaveLength(1);
-});
+    it('registerUser function is called', () => {
+        const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
+        const div = document.createElement('div');
+        let fakeRegisterUser = sinon.stub();
 
-it('registerUser function is called', () => {
-    const expectedUser = { email: 'zquin@allstate.com', password: 'passw0rd' };
-    const div = document.createElement('div');
-    let fakeRegisterUser = sinon.stub();
+        const regUser = shallow(<RegisterUser onRegister={fakeRegisterUser} />, div);
 
-    const regUser = shallow(<RegisterUser onRegister={fakeRegisterUser} />, div);
+        regUser.find('#register-button').simulate('click');
+        expect(fakeRegisterUser.calledOnce).toBe(true);
+    });
 
-    regUser.find('#register-button').simulate('click');
-    expect(fakeRegisterUser.calledOnce).toBe(true);
 });
 

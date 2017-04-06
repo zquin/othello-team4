@@ -10,17 +10,19 @@ beforeEach(() => {
   app = shallow(<App />, div);
 });
 
-it('renders the main app page', () => {
-  expect(app.find('.App')).toHaveLength(1);
+describe('Full Application testing', ()=> {
+    it('renders the main app page', () => {
+        expect(app.find('.App')).toHaveLength(1);
+    });
+
+    it('registers a new user', () => {
+        let user = {emailAddress: "zquinn@allstate.com", password: ""};
+        fetchMock.post('/users', user);
+
+        app.instance().sendUser(user).then((response) => {
+            expect(response.status).toBe(200);
+        })
+        // Unmock.
+        fetchMock.restore();
+    });
 });
-
-it('registers a new user', () => {
-    let user = {emailAddress: "zquinn@allstate.com", password: ""};
-    fetchMock.post('/users', user);
-
-    app.instance().sendUser(user).then((response) => {
-        expect(response.status).toBe(200);
-    })
-    // Unmock.
-    fetchMock.restore();
-})
