@@ -109,4 +109,23 @@ describe('Full Application testing', ()=> {
       expect(state.gameBoard[6].row[3]).toBe('x')
     })
 
+    it('isTaking returns ?????? if a potential move will take pieces', () => {
+    })
+
+    xit('takesVertically reutrns false if it cant take peieces' () => {
+      let startValue = state.gameBoard[3].row[3];
+      expect(startValue).toBe('W');
+      let nextPlace = state.gameBoard[2].row[3]
+      expect(nextPlace).toBe('x')
+      expect(app.instance().takesVertically(2, 3)).toBe(false)
+    })
+
+    xit('takesVertically changes the colors of pieces being taken and reutrns false if it cant take peieces', () => {
+      let startValue = state.gameBoard[3].row[3];
+      expect(startValue).toBe('W');
+      let nextPlace = state.gameBoard[2].row[3]
+      expect(nextPlace).toBe('x')
+      expect(app.instance().isTaking(2, 3)).toBe(true)// this is a valid move
+    })
+
 })

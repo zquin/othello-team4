@@ -71,28 +71,12 @@ class App extends Component {
 
         let spotAbove = rowAbove[cellId]
         let spotBelow = rowBelow[cellId]
-        // console.log('rowId', rowId);
-        // console.log('cellId', cellId);
-        // console.log('black players turn', this.state.blacksTurn);
-        // console.log('state', this.state);
-        // console.log('spotToTheLeft', spotToTheLeft);
-        // console.log('spotToTheRight', spotToTheRight);
-        // console.log('spotAbove', spotAbove);
-        // console.log('spotBelow', spotBelow);
-        // console.log('the place', currentRow[cellId]);
-        // console.log('currentRow', currentRow);
-        // console.log('first check', (spotToTheLeft === oppositePlayer[this.state.blacksTurn]));
-        // console.log('second check', (spotToTheRight === oppositePlayer[this.state.blacksTurn]));
-        // console.log('this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight)', this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer));
 
-                // place to move has players piece in horizontal line
-
-
-                // place to move has players piece in vertical line
-                // place to move has players piece in diagonal line
         let validHorizontally = this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer)
         let validVertically = this.nextToOppenentVertically(spotBelow, spotAbove, oppositePlayer)
-        console.log('validVertically', validVertically);
+        // place to move has players piece in diagonal line
+
+
         if (validHorizontally || validVertically) {
           return true
         }
@@ -121,8 +105,13 @@ class App extends Component {
             this.state.blacksTurn ? newRow[cellId] = "B" : newRow[cellId] = "W"
             newGameBoard[rowId].row = newRow.join('')
             this.setState({blacksTurn: !this.state.blacksTurn})
-            this.setState(newGameBoard)
+            this.setState({gameBoard: newGameBoard})
         }
+    }
+
+
+    takesVertically (rowId, cellId) {
+      return false
     }
 
     registerUser(userInfo) {
