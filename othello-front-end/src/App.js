@@ -23,7 +23,8 @@ class App extends Component {
             ],
             blacksTurn: true,
             userId: "-1",
-            gameId: -1
+            gameId: -1,
+            isHidden: false
         }
         this.changeColor = this.changeColor.bind(this)
         this.registerUser = this.registerUser.bind(this)
@@ -146,6 +147,7 @@ class App extends Component {
 
     loginUser(userInfo) {
         this.sendLoginUser(userInfo)
+        this.setState({isHidden: !this.state.isHidden})
     }
 
     sendUser(user) {
@@ -223,12 +225,22 @@ class App extends Component {
     }
 
     render() {
+        let css = {true: 'isHidden', false: ''}
         return (
-            <div className="App">
-                <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser}/>
-                <GameBoard playerTakeTurn={this.playerTakeTurn} gameBoard={this.state.gameBoard}/>
-                <button onClick={this.saveGame}>Save Game</button>
+          <div className="App">
+            <div className="l-grid">
+              <div className="l-grid__col">
+                <div id='register-div' className={css[this.state.isHidden]}>
+                  <h1>Welcome to Othello</h1>
+                  <p>Please register or login</p>
+                  <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser} />
+                </div>
+                <div className={css[!this.state.isHidden]}>
+                  <GameBoard saveGame={this.saveGame} playerTakeTurn={this.playerTakeTurn} gameBoard={this.state.gameBoard} />
+                </div>
+              </div>
             </div>
+          </div>
         );
     }
 

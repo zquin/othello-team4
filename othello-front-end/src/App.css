@@ -53,3 +53,18 @@
   height: 90px;
   background-color: white;
 }
+
+.isHidden {
+  display: none;
+}
+
+#register-div{
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+}
+
+.reg-log-buttons-div{
+  margin-top: 20px;
+  margin-right: 15px;
+}

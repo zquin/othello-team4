@@ -19,6 +19,7 @@ export default class GameBoard extends Component {
                     </div>)
                 })
               }
+              <button onClick={this.props.saveGame}>Save Game</button>
             </div>
         )
     }
