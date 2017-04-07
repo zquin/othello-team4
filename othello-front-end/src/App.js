@@ -30,6 +30,7 @@ class App extends Component {
         this.isLegal = this.isLegal.bind(this)
         this.isNextToOppenent = this.isNextToOppenent.bind(this)
         this.nextToOppenentHorizontally = this.nextToOppenentHorizontally.bind(this)
+        this.nextToOppenentVertically = this.nextToOppenentVertically.bind(this)
     }
 
     playerTakeTurn (rowId, cellId) {
@@ -40,17 +41,8 @@ class App extends Component {
     }
 
     isLegal (rowId, cellId, player) { //being tested
-        // place to move is open
         let isOpen = this.isOpen(rowId, cellId);
-        // check oppent piece is next to it
         let nextToOppenent = this.isNextToOppenent(rowId, cellId)
-
-        // place to move has players piece in horizontal line
-
-
-        // place to move has players piece in vertical line
-        // place to move has players piece in diagonal line
-
         if (isOpen && nextToOppenent) {
             return true
         }
@@ -65,34 +57,57 @@ class App extends Component {
     }
 
     isNextToOppenent(rowId, cellId) {
-        let row = this.state.gameBoard[rowId].row
-        let oppositePlayer = {
-            false: "B",
-            true: "W"
-        }
+      let oppositePlayer = {
+        false: "B",
+        true: "W"
+      }
 
-        let oneBefore = row[cellId - 1]
-        let oneAfter = row[cellId + 1]
+        let currentRow = this.state.gameBoard[rowId].row
+        let rowAbove = this.state.gameBoard[rowId - 1].row
+        let rowBelow = this.state.gameBoard[rowId + 1].row
 
+        let spotToTheLeft = currentRow[cellId - 1]
+        let spotToTheRight = currentRow[cellId + 1]
+
+        let spotAbove = rowAbove[cellId]
+        let spotBelow = rowBelow[cellId]
         // console.log('rowId', rowId);
         // console.log('cellId', cellId);
         // console.log('black players turn', this.state.blacksTurn);
         // console.log('state', this.state);
-        // console.log('oneBefore', oneBefore);
-        // console.log('oneAfter', oneAfter);
-        // console.log('the place', row[cellId]);
-        // console.log('row', row);
-        // console.log('first check', (oneBefore === oppositePlayer[this.state.blacksTurn]));
-        // console.log('second check', (oneAfter === oppositePlayer[this.state.blacksTurn]));
-        // console.log('this.nextToOppenentHorizontally(oneBefore, oneAfter)', this.nextToOppenentHorizontally(oneBefore, oneAfter, oppositePlayer));
-        if (this.nextToOppenentHorizontally(oneBefore, oneAfter, oppositePlayer)) {
+        // console.log('spotToTheLeft', spotToTheLeft);
+        // console.log('spotToTheRight', spotToTheRight);
+        // console.log('spotAbove', spotAbove);
+        // console.log('spotBelow', spotBelow);
+        // console.log('the place', currentRow[cellId]);
+        // console.log('currentRow', currentRow);
+        // console.log('first check', (spotToTheLeft === oppositePlayer[this.state.blacksTurn]));
+        // console.log('second check', (spotToTheRight === oppositePlayer[this.state.blacksTurn]));
+        // console.log('this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight)', this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer));
+
+                // place to move has players piece in horizontal line
+
+
+                // place to move has players piece in vertical line
+                // place to move has players piece in diagonal line
+        let validHorizontally = this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer)
+        let validVertically = this.nextToOppenentVertically(spotBelow, spotAbove, oppositePlayer)
+        console.log('validVertically', validVertically);
+        if (validHorizontally || validVertically) {
           return true
         }
         return false
     }
 
-    nextToOppenentHorizontally (oneBefore, oneAfter, oppositePlayer) {
-      if ((oneBefore === oppositePlayer[this.state.blacksTurn]) || (oneAfter === oppositePlayer[this.state.blacksTurn])) {
+    nextToOppenentHorizontally (spotToTheLeft, spotToTheRight, oppositePlayer) {
+      if ((spotToTheLeft === oppositePlayer[this.state.blacksTurn]) || (spotToTheRight === oppositePlayer[this.state.blacksTurn])) {
+        return true
+      }
+      return false
+    }
+
+    nextToOppenentVertically (spotBelow, spotAbove, oppositePlayer) {
+      if ((spotBelow === oppositePlayer[this.state.blacksTurn]) || (spotAbove === oppositePlayer[this.state.blacksTurn])) {
         return true
       }
       return false

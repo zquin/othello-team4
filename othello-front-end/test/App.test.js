@@ -26,6 +26,7 @@ describe('Full Application testing', ()=> {
     });
 
     xit('playerTakeTurn allows a player to place piece for a valid move', () => {
+      //the places Im tryign to place a piece may not be valid in this test
       let startValue = state.gameBoard[3].row[3];
       expect(startValue).toBe('W');
       let nextPlace = state.gameBoard[2].row[3]
@@ -41,15 +42,6 @@ describe('Full Application testing', ()=> {
       let newValue = state.gameBoard[0].row[0]
       expect(newValue).toBe('B')
     });
-
-    xit('playerTakeTurn disallows a player to place piece for an illegal move', () => {
-      let startValue = state.gameBoard[4].row[6];
-      expect(startValue).toBe('B');
-      let nextPlace = state.gameBoard[5].row[6]
-      expect(nextPlace).toBe('x')
-      app.instance().playerTakeTurn(5, 3)
-      expect(state.gameBoard[5].row[6]).toBe('x')
-    })
 
     it('isLegal function checks the players move is legal and returns true of false', () => {
       let startValue = state.gameBoard[3].row[3];
@@ -90,4 +82,31 @@ describe('Full Application testing', ()=> {
       expect(app.instance().nextToOppenentHorizontally('x','W', oppositePlayer)).toBe(true)
       expect(app.instance().nextToOppenentHorizontally('x','x', oppositePlayer)).toBe(false)
     })
+
+    it('playerTakeTurn disallows a player to place piece for an illegal horizontal move', () => {
+      let startValue = state.gameBoard[4].row[3];
+      expect(startValue).toBe('B');
+      let nextPlace = state.gameBoard[5].row[3]
+      expect(nextPlace).toBe('x')
+
+      app.instance().playerTakeTurn(4, 5)
+      expect(state.gameBoard[4].row[5]).toBe('B')
+
+      app.instance().playerTakeTurn(1, 3)
+      expect(state.gameBoard[1].row[3]).toBe('x')
+    })
+
+    it('playerTakeTurn disallows a player to place piece for an illegal vertical move', () => {
+      let startValue = state.gameBoard[3].row[3];
+      expect(startValue).toBe('W');
+      let nextPlace = state.gameBoard[2].row[3]
+      expect(nextPlace).toBe('x')
+
+      app.instance().playerTakeTurn(2, 3)// this is a valid move
+      expect(state.gameBoard[2].row[3]).toBe('B')
+
+      app.instance().playerTakeTurn(6, 3)//this is not a valid move
+      expect(state.gameBoard[6].row[3]).toBe('x')
+    })
+
 })
