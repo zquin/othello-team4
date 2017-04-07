@@ -5,7 +5,7 @@ import Row from '../src/Row'
 let rowComponent, div, row;
 beforeEach(() => {
     div = document.createElement('div');
-    row = "x,x,x,x,x,x,x,x"
+    row = "xxxxxxxx"
     rowComponent = shallow(<Row id={1} changeColor={() => true} row={row}/>, div);
 });
 

@@ -11,14 +11,15 @@ class App extends Component {
 
         this.state = {
             gameBoard: [
-                {row: "x,x,x,x,x,x,x,x"},
-                {row: "x,x,x,x,x,x,x,x"},
-                {row: "x,x,x,x,x,x,x,x"},
-                {row: "x,x,x,W,B,x,x,x"},
-                {row: "x,x,x,B,W,x,x,x"},
-                {row: "x,x,x,x,x,x,x,x"},
-                {row: "x,x,x,x,x,x,x,x"},
-                {row: "x,x,x,x,x,x,x,x"}
+                //     01234567
+                {row: "xxxxxxxx"},
+                {row: "xxxxxxxx"},
+                {row: "xxxxxxxx"},
+                {row: "xxxWBxxx"},
+                {row: "xxxBWxxx"},
+                {row: "xxxxxxxx"},
+                {row: "xxxxxxxx"},
+                {row: "xxxxxxxx"}
             ],
             blacksTurn: true,
             userId: "-1",
@@ -28,20 +29,93 @@ class App extends Component {
         this.registerUser = this.registerUser.bind(this)
         this.loginUser = this.loginUser.bind(this)
         this.saveGame = this.saveGame.bind(this)
+        this.playerTakeTurn = this.playerTakeTurn.bind(this)
+        this.isOpen = this.isOpen.bind(this)
+        this.isLegal = this.isLegal.bind(this)
+        this.isNextToOppenent = this.isNextToOppenent.bind(this)
+        this.nextToOppenentHorizontally = this.nextToOppenentHorizontally.bind(this)
+        this.nextToOppenentVertically = this.nextToOppenentVertically.bind(this)
     }
 
-    changeColor(rowId, cellId) {
-        let state = this.state
-        let newGameBoard = this.state.gameBoard
-
-        let rowArr = newGameBoard[rowId].row.split(",")
-        if (rowArr[cellId] === ("x")) {
-            this.state.blacksTurn ? rowArr[cellId] = "B" : rowArr[cellId] = "W"
-            newGameBoard[rowId].row = rowArr.toString()
-            state.gameBoard = newGameBoard
-            state.blacksTurn = !this.state.blacksTurn
+    playerTakeTurn (rowId, cellId) {
+        let player = this.state.blacksTurn ? 'B' : 'W';
+        if (this.isLegal(rowId, cellId, player)) {
+            this.changeColor(rowId, cellId)
         }
-        this.setState(state)
+    }
+
+    isLegal (rowId, cellId, player) { //being tested
+        let isOpen = this.isOpen(rowId, cellId);
+        let nextToOppenent = this.isNextToOppenent(rowId, cellId)
+        if (isOpen && nextToOppenent) {
+            return true
+        }
+        return false
+    }
+
+    isOpen (rowId, cellId) {
+        if (this.state.gameBoard[rowId].row[cellId] === 'x') {
+            return true
+        }
+        return false
+    }
+
+    isNextToOppenent(rowId, cellId) {
+      let oppositePlayer = {
+        false: "B",
+        true: "W"
+      }
+
+        let currentRow = this.state.gameBoard[rowId].row
+        let rowAbove = this.state.gameBoard[rowId - 1].row
+        let rowBelow = this.state.gameBoard[rowId + 1].row
+
+        let spotToTheLeft = currentRow[cellId - 1]
+        let spotToTheRight = currentRow[cellId + 1]
+
+        let spotAbove = rowAbove[cellId]
+        let spotBelow = rowBelow[cellId]
+
+        let validHorizontally = this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer)
+        let validVertically = this.nextToOppenentVertically(spotBelow, spotAbove, oppositePlayer)
+        // place to move has players piece in diagonal line
+
+
+        if (validHorizontally || validVertically) {
+          return true
+        }
+        return false
+    }
+
+    nextToOppenentHorizontally (spotToTheLeft, spotToTheRight, oppositePlayer) {
+      if ((spotToTheLeft === oppositePlayer[this.state.blacksTurn]) || (spotToTheRight === oppositePlayer[this.state.blacksTurn])) {
+        return true
+      }
+      return false
+    }
+
+    nextToOppenentVertically (spotBelow, spotAbove, oppositePlayer) {
+      if ((spotBelow === oppositePlayer[this.state.blacksTurn]) || (spotAbove === oppositePlayer[this.state.blacksTurn])) {
+        return true
+      }
+      return false
+    }
+
+    changeColor(rowId, cellId) { //has a test
+        let newGameBoard = this.state.gameBoard
+        let newRow = newGameBoard[rowId].row.split("")
+
+        if(newRow[cellId] === ("x")) {
+            this.state.blacksTurn ? newRow[cellId] = "B" : newRow[cellId] = "W"
+            newGameBoard[rowId].row = newRow.join('')
+            this.setState({blacksTurn: !this.state.blacksTurn})
+            this.setState({gameBoard: newGameBoard})
+        }
+    }
+
+
+    takesVertically (rowId, cellId) {
+      return false
     }
 
     registerUser(userInfo) {
@@ -134,7 +208,7 @@ class App extends Component {
         return (
             <div className="App">
                 <RegisterUser onRegister={this.registerUser} onLogin={this.loginUser}/>
-                <GameBoard changeColor={this.changeColor} gameBoard={this.state.gameBoard}/>
+                <GameBoard playerTakeTurn={this.playerTakeTurn} gameBoard={this.state.gameBoard}/>
                 <button onClick={this.saveGame}>Save Game</button>
             </div>
         );

@@ -14,8 +14,8 @@ export default class GameBoard extends Component {
               {
                 this.props.gameBoard.map((x, i) => {
                   return (
-                    <div>
-                      <Row id={i} changeColor={this.props.changeColor} row={x.row}/>
+                    <div key={i}>
+                      <Row id={i} playerTakeTurn={this.props.playerTakeTurn} row={x.row}/>
                     </div>)
                 })
               }
