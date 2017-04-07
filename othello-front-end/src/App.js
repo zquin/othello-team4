@@ -33,8 +33,6 @@ class App extends Component {
         this.isOpen = this.isOpen.bind(this)
         this.isLegal = this.isLegal.bind(this)
         this.isNextToOppenent = this.isNextToOppenent.bind(this)
-        this.nextToOppenentHorizontally = this.nextToOppenentHorizontally.bind(this)
-        this.nextToOppenentVertically = this.nextToOppenentVertically.bind(this)
     }
 
     playerTakeTurn (rowId, cellId) {
@@ -82,10 +80,10 @@ class App extends Component {
         let lowerLeft = rowBelow[cellId - 1]
         let lowerRight = rowBelow[cellId + 1]
 
-        let validHorizontally = this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer)
-        let validVertically = this.nextToOppenentVertically(spotBelow, spotAbove, oppositePlayer)
-        let validDiagonallyUpper = this.nextToOppenentDiagonallyUpper(upperLeft, upperRight ,oppositePlayer)
-        let validDiagonallyLower = this.nextToOppenentDiagonallyLower(lowerLeft, lowerRight ,oppositePlayer)
+        let validHorizontally = this.checkNextCell(spotToTheLeft, spotToTheRight, oppositePlayer)
+        let validVertically = this.checkNextCell(spotBelow, spotAbove, oppositePlayer)
+        let validDiagonallyUpper = this.checkNextCell(upperLeft, upperRight ,oppositePlayer)
+        let validDiagonallyLower = this.checkNextCell(lowerLeft, lowerRight ,oppositePlayer)
         // place to move has players piece in diagonal line
 
         if (validHorizontally || validVertically || validDiagonallyUpper || validDiagonallyLower) {
@@ -94,29 +92,8 @@ class App extends Component {
         return false
     }
 
-    nextToOppenentHorizontally (spotToTheLeft, spotToTheRight, oppositePlayer) {
-      if ((spotToTheLeft === oppositePlayer[this.state.blacksTurn]) || (spotToTheRight === oppositePlayer[this.state.blacksTurn])) {
-        return true
-      }
-      return false
-    }
-
-    nextToOppenentVertically (spotBelow, spotAbove, oppositePlayer) {
-      if ((spotBelow === oppositePlayer[this.state.blacksTurn]) || (spotAbove === oppositePlayer[this.state.blacksTurn])) {
-        return true
-      }
-      return false
-    }
-
-    nextToOppenentDiagonallyUpper (upperLeft, upperRight, oppositePlayer) {
-      if ((upperLeft === oppositePlayer[this.state.blacksTurn]) || (upperRight === oppositePlayer[this.state.blacksTurn])) {
-        return true
-      }
-      return false
-    }
-
-    nextToOppenentDiagonallyLower (lowerLeft, lowerRight ,oppositePlayer) {
-      if ((lowerLeft === oppositePlayer[this.state.blacksTurn]) || (lowerRight === oppositePlayer[this.state.blacksTurn])) {
+    checkNextCell (spot1, spot2, oppositePlayer) {
+      if ((spot1 === oppositePlayer[this.state.blacksTurn]) || (spot2 === oppositePlayer[this.state.blacksTurn])) {
         return true
       }
       return false
@@ -135,9 +112,9 @@ class App extends Component {
     }
 
 
-    takesVertically (rowId, cellId) {
-      return false
-    }
+    // takesVertically (rowId, cellId) {
+    //   return false
+    // }
 
     registerUser(userInfo) {
         this.sendUser(userInfo)
