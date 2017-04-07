@@ -21,7 +21,16 @@ class App extends Component {
                 {row: "xxxxxxxx"},
                 {row: "xxxxxxxx"}
             ],
-            updatedGameBoard:[],
+            updatedGameBoard:[
+              {row: "xxxxxxxx"},
+              {row: "xxxxxxxx"},
+              {row: "xxxxxxxx"},
+              {row: "xxxWBxxx"},
+              {row: "xxxBWxxx"},
+              {row: "xxxxxxxx"},
+              {row: "xxxxxxxx"},
+              {row: "xxxxxxxx"}
+            ],
             blacksTurn: true,
             userId: "-1",
             gameId: -1,
@@ -35,6 +44,7 @@ class App extends Component {
         this.isOpen = this.isOpen.bind(this)
         this.isLegal = this.isLegal.bind(this)
         this.isNextToOppenent = this.isNextToOppenent.bind(this)
+        this.changeColorForFlipping = this.changeColorForFlipping.bind(this)
     }
 
     playerTakeTurn (rowId, cellId) {
@@ -150,6 +160,14 @@ class App extends Component {
         }
     }
 
+    changeColorForFlipping(rowId, cellId, tempGameBoard) { //has a test
+
+        let newRow = tempGameBoard[rowId].row.split("")
+        this.state.blacksTurn ? newRow[cellId] = "B" : newRow[cellId] = "W"
+        tempGameBoard[rowId].row = newRow.join('')
+        return tempGameBoard
+    }
+
     hasAnAnchor(rowId, cellId) {
         let currentPlayer = {
           false: "W",
@@ -168,30 +186,61 @@ class App extends Component {
         // [ x x x ]
         // [ x 0 x ]
         // [ x x x ]
-        let state = this.state
-        state.updatedGameBoard = this.state.gameBoard
+        // let state = this.state
+        //
+        // //state.updatedGameBoard = Array.from(this.state.gameBoard)
+        // for (let element in this.state.gameBoard) {
+        //   state.updatedGameBoard[element] = this.state.gameBoard[element]
+        // }
+        //this.setState(state)
+
         for(let element=0;element<this.state.locationAround.length; element++) {
             console.log("index = " + element + " value = " +this.state.locationAround[element])
             if (this.state.locationAround[element].length>0) {
               // a coordinate is found
               let xCoordinate = this.state.locationAround[element][0]
               let yCoordinate = this.state.locationAround[element][1]
+
+
+
               if ((xCoordinate !== 0) && yCoordinate === 0) {
                 // traverse the currentRow
-                for(let i=cellId+1;i<currentRow.length;i++) {
-
+                let i=cellId+1;
+                let found = false
+                while(i<currentRow.length) {
                   if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-                    return true;
+                    found = true
+                    break;
+                  } else {
+                    i++
+                  }
+                }
+                //this.state.gameBoard[rowId].row[i]
+                if(found) {
+                  for(let j = i; j > cellId; j++) {
+                    //flip from
                   }
                 }
 
-                for(let i=cellId+1;i>=0;i--) {
+                for(let i=cellId-1;i>=0;i--) {
+                  let state = this.state
+                  //TODO
+                  //console.log("updatedGameBoard row = " + state.updatedGameBoard[rowId].row[i])
+                  console.log("i = " + i)
+                  // console.log("before change color called = " + state.updatedGameBoard)
+                  let temp = this.changeColorForFlipping(rowId, i, state.updatedGameBoard.slice())
+                  console.log("temp = " + temp)
+                  console.log("after change color called = " + state.updatedGameBoard[rowId])                  // state.updatedGameBoard[rowId].row[i] = !currentPlayer
                   if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-
+                    //this.setState(state)
                     return true;
                   }
                 }
               }
+
+
+
+
               if ((yCoordinate === 1) && xCoordinate === 0) {
                 // traverse Vertically up
                 for(let i=(rowId-1);i>=0;i--) {
