@@ -67,8 +67,8 @@ class App extends Component {
       }
 
         let currentRow = this.state.gameBoard[rowId].row
-        let rowAbove = this.state.gameBoard[rowId - 1].row
-        let rowBelow = this.state.gameBoard[rowId + 1].row
+        let rowAbove = this.state.gameBoard[(rowId - 1) >= 0 ? (rowId - 1) : 0].row
+        let rowBelow = this.state.gameBoard[(rowId + 1) % this.state.gameBoard.length].row
 
         let spotToTheLeft = currentRow[cellId - 1]
         let spotToTheRight = currentRow[cellId + 1]
@@ -76,12 +76,19 @@ class App extends Component {
         let spotAbove = rowAbove[cellId]
         let spotBelow = rowBelow[cellId]
 
+        let upperLeft = rowAbove[cellId - 1]
+        let upperRight = rowAbove[cellId + 1]
+
+        let lowerLeft = rowBelow[cellId - 1]
+        let lowerRight = rowBelow[cellId + 1]
+
         let validHorizontally = this.nextToOppenentHorizontally(spotToTheLeft, spotToTheRight, oppositePlayer)
         let validVertically = this.nextToOppenentVertically(spotBelow, spotAbove, oppositePlayer)
+        let validDiagonallyUpper = this.nextToOppenentDiagonallyUpper(upperLeft, upperRight ,oppositePlayer)
+        let validDiagonallyLower = this.nextToOppenentDiagonallyLower(lowerLeft, lowerRight ,oppositePlayer)
         // place to move has players piece in diagonal line
 
-
-        if (validHorizontally || validVertically) {
+        if (validHorizontally || validVertically || validDiagonallyUpper || validDiagonallyLower) {
           return true
         }
         return false
@@ -96,6 +103,20 @@ class App extends Component {
 
     nextToOppenentVertically (spotBelow, spotAbove, oppositePlayer) {
       if ((spotBelow === oppositePlayer[this.state.blacksTurn]) || (spotAbove === oppositePlayer[this.state.blacksTurn])) {
+        return true
+      }
+      return false
+    }
+
+    nextToOppenentDiagonallyUpper (upperLeft, upperRight, oppositePlayer) {
+      if ((upperLeft === oppositePlayer[this.state.blacksTurn]) || (upperRight === oppositePlayer[this.state.blacksTurn])) {
+        return true
+      }
+      return false
+    }
+
+    nextToOppenentDiagonallyLower (lowerLeft, lowerRight ,oppositePlayer) {
+      if ((lowerLeft === oppositePlayer[this.state.blacksTurn]) || (lowerRight === oppositePlayer[this.state.blacksTurn])) {
         return true
       }
       return false
