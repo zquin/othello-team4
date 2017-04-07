@@ -21,9 +21,11 @@ class App extends Component {
                 {row: "xxxxxxxx"},
                 {row: "xxxxxxxx"}
             ],
+            updatedGameBoard:[],
             blacksTurn: true,
             userId: "-1",
-            gameId: -1
+            gameId: -1,
+            locationAround: []
         }
         this.changeColor = this.changeColor.bind(this)
         this.registerUser = this.registerUser.bind(this)
@@ -39,6 +41,8 @@ class App extends Component {
         let player = this.state.blacksTurn ? 'B' : 'W';
         if (this.isLegal(rowId, cellId, player)) {
             this.changeColor(rowId, cellId)
+            // update the game board to updatedGameBoard which will
+            // flip the pieces that have been taken
         }
     }
 
@@ -86,6 +90,31 @@ class App extends Component {
         let validVertically = this.checkNextCell(spotBelow, spotAbove, oppositePlayer)
         let validDiagonallyUpper = this.checkNextCell(upperLeft, upperRight ,oppositePlayer)
         let validDiagonallyLower = this.checkNextCell(lowerLeft, lowerRight ,oppositePlayer)
+
+        let validupperLeft = this.checkCell(upperLeft, oppositePlayer)
+        let validAbove = this.checkCell(spotAbove, oppositePlayer)
+        let validRight = this.checkCell(spotToTheRight, oppositePlayer)
+        let validupperRight = this.checkCell(upperRight, oppositePlayer)
+        let validlowerRight = this.checkCell(lowerRight, oppositePlayer)
+        let validBelow = this.checkCell(spotBelow, oppositePlayer)
+        let validlowerLeft = this.checkCell(lowerLeft, oppositePlayer)
+        let validLeft = this.checkCell(spotToTheLeft, oppositePlayer)
+
+
+        let locationAround = [
+            validupperLeft ? [-1,1] : []
+            ,validAbove ? [0,1] : []
+            ,validRight ? [1,0] : []
+            ,validupperRight ? [1,1] : []
+            ,validlowerRight ? [1,-1] : []
+            ,validBelow ? [0,-1] : []
+            ,validlowerLeft ? [-1,-1] : []
+            ,validLeft ? [-1,0] : []
+          ]
+
+        let state=this.state
+        state.locationAround = locationAround
+        this.setState(state)
         // place to move has players piece in diagonal line
 
         if (validHorizontally || validVertically || validDiagonallyUpper || validDiagonallyLower) {
@@ -94,9 +123,17 @@ class App extends Component {
         return false
     }
 
+    checkCell(spot, oppositePlayer) {
+      if (spot === oppositePlayer[this.state.blacksTurn]) {
+        return true
+      }
+      return false
+    }
+
     checkNextCell (spot1, spot2, oppositePlayer) {
       if ((spot1 === oppositePlayer[this.state.blacksTurn]) || (spot2 === oppositePlayer[this.state.blacksTurn])) {
         return true
+
       }
       return false
     }
@@ -118,22 +155,95 @@ class App extends Component {
           false: "W",
           true: "B"
         }
+        console.log(this.state.locationAround.length)
 
+        // check the locationAround to see which are true, meaning
+        // there is an oppositePlayer piece there, then check to see
+        // if there is an anchor in that direction
         let currentRow = this.state.gameBoard[rowId].row
-        for(let i=cellId+1;i<currentRow.length;i++) {
-          if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-            return true;
-          }
+
+        let rowAbove = this.state.gameBoard[(rowId - 1) >= 0 ? (rowId - 1) : 0].row
+        let rowBelow = this.state.gameBoard[(rowId + 1) % this.state.gameBoard.length].row
+
+        // [ x x x ]
+        // [ x 0 x ]
+        // [ x x x ]
+        let state = this.state
+        state.updatedGameBoard = this.state.gameBoard
+        for(let element=0;element<this.state.locationAround.length; element++) {
+            console.log("index = " + element + " value = " +this.state.locationAround[element])
+            if (this.state.locationAround[element].length>0) {
+              // a coordinate is found
+              let xCoordinate = this.state.locationAround[element][0]
+              let yCoordinate = this.state.locationAround[element][1]
+              if ((xCoordinate !== 0) && yCoordinate === 0) {
+                // traverse the currentRow
+                for(let i=cellId+1;i<currentRow.length;i++) {
+
+                  if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+
+                for(let i=cellId+1;i>=0;i--) {
+                  if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
+
+                    return true;
+                  }
+                }
+              }
+              if ((yCoordinate === 1) && xCoordinate === 0) {
+                // traverse Vertically up
+                for(let i=(rowId-1);i>=0;i--) {
+                  if (this.state.gameBoard[(i)].row[cellId] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+              }
+
+              if ((yCoordinate === -1) && xCoordinate === 0) {
+                // trverse vertically down
+                for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
+                  if (this.state.gameBoard[(i)].row[cellId] === currentPlayer[this.state.blacksTurn]) {
+
+                    return true;
+                  }
+                }
+              }
+              if ((yCoordinate === 1) && xCoordinate === -1) {
+                // traverse top left diag
+                for(let i=(rowId-1);i>=0;i--) {
+                  if (this.state.gameBoard[(i)].row[cellId+i] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+              }
+              if ((yCoordinate === 1) && xCoordinate === 1) {
+                // traverse top right diag
+                for(let i=(rowId-1);i>=0;i--) {
+                  if (this.state.gameBoard[(i)].row[cellId-i] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+              }
+              if ((yCoordinate === -1) && xCoordinate === -1) {
+                // traverse bottom left diag
+                for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
+                  if (this.state.gameBoard[(i)].row[cellId-i] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+              }
+              if ((yCoordinate === -1) && xCoordinate === 1) {
+                // traverse bottom right diag
+                for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
+                  if (this.state.gameBoard[(i)].row[cellId+i] === currentPlayer[this.state.blacksTurn]) {
+                    return true;
+                  }
+                }
+              }
+            }
         }
-
-        for(let i=cellId+1;i>=0;i--) {
-          if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-            return true;
-          }
-        }
-
-
-      // check to see if there is an anchor
     }
 
     // takesVertically (rowId, cellId) {
