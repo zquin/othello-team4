@@ -19,7 +19,7 @@ export default class GameBoard extends Component {
                     </div>)
                 })
               }
-              <button onClick={this.props.saveGame}>Save Game</button>
+              <button onClick={this.props.saveGame} className='save-game-button c-btn c-btn--primary c-btn--lg'>Save Game</button>
             </div>
         )
     }
