@@ -124,8 +124,6 @@ class App extends Component {
 
     loginUser(userInfo) {
         this.sendLoginUser(userInfo)
-        // console.log("We are in logInUser" + this.state.userId);
-
     }
 
     sendUser(user) {
@@ -146,7 +144,6 @@ class App extends Component {
     createGame() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log("user id in create game = " + this.state.userId)
         var request = {
             method: 'POST',
             headers: myHeaders,
@@ -165,12 +162,14 @@ class App extends Component {
     saveGame() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-
+        console.log("in save game game id = " + this.state.gameId)
+        console.log("gameboard  = " + JSON.stringify(this.state.gameBoard))
         var request = {
             method: 'PUT',
             headers: myHeaders,
-            body: JSON.stringify(this.state.gameBoard)
+            body: "{ \"rows\": "+JSON.stringify(this.state.gameBoard) + "}"
         };
+        console.log(request)
         let url = '/games/' + this.state.gameId + '/';
         return fetch(url, request)
             .then(res => res.json())
@@ -193,13 +192,10 @@ class App extends Component {
         return fetch('/users/login/', request)
             .then(res => res.json())
             .then((out) => {
-                console.log("before state update" + this.state.userId)
                 let state = this.state;
                 state.userId = out.userId
-                console.log("after state update" + state.userId)
                 this.setState(state)
             }).then( () => {
-                console.log("jfeiwoajfioweajfiowajfoi")
                 this.createGame()
             })
     }
