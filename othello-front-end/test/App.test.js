@@ -159,10 +159,39 @@ describe('Full Application testing', ()=> {
       expect(state.gameBoard[6].row[3]).toBe('x')
     })
 
+
+    // Anchor tests
+    it('hasAnAnchor checks to see if a piece has an anchor on the axis', () => {
+      let oppositePlayer = {
+        false: "B",
+        true: "W"
+      }
+
+      // let startValue = state.gameBoard[4].row[4];
+      // expect(startValue).toBe('W');
+      //
+      // let lowerLeft = state.gameBoard[5].row[3]
+      // expect(lowerLeft).toBe('x')
+      //
+      // let lowerRight = state.gameBoard[5].row[5]
+      // expect(lowerRight).toBe('x')
+      //
+      // expect(app.instance().checkNextCell('x','x', oppositePlayer)).toBe(false)
+      // expect(app.instance().checkNextCell('B','x', oppositePlayer)).toBe(false)
+      // expect(app.instance().checkNextCell('x','B', oppositePlayer)).toBe(false)
+      // expect(app.instance().checkNextCell('B','B', oppositePlayer)).toBe(false)
+      //
+      // expect(app.instance().checkNextCell('W','x', oppositePlayer)).toBe(true)
+      // expect(app.instance().checkNextCell('x','W', oppositePlayer)).toBe(true)
+      // expect(app.instance().checkNextCell('W','W', oppositePlayer)).toBe(true)
+    })
+
+    // flip player pieces test
+
     xit('isTaking returns ?????? if a potential move will take pieces', () => {
     })
 
-    xit('takesVertically reutrns false if it cant take peieces', () => {
+    xit('takesVertically returns false if it cant take pieces', () => {
       let startValue = state.gameBoard[3].row[3];
       expect(startValue).toBe('W');
       let nextPlace = state.gameBoard[2].row[3]
@@ -170,7 +199,7 @@ describe('Full Application testing', ()=> {
       expect(app.instance().takesVertically(2, 3)).toBe(false)
     })
 
-    xit('takesVertically changes the colors of pieces being taken and reutrns false if it cant take peieces', () => {
+    xit('takesVertically changes the colors of pieces being taken and returns false if it cant take pieces', () => {
       let startValue = state.gameBoard[3].row[3];
       expect(startValue).toBe('W');
       let nextPlace = state.gameBoard[2].row[3]

@@ -46,7 +46,9 @@ class App extends Component {
         let isOpen = this.isOpen(rowId, cellId);
         let nextToOppenent = this.isNextToOppenent(rowId, cellId)
         if (isOpen && nextToOppenent) {
-            return true
+            if(this.hasAnAnchor(rowId, cellId)) {
+              return true
+            }
         }
         return false
     }
@@ -111,6 +113,28 @@ class App extends Component {
         }
     }
 
+    hasAnAnchor(rowId, cellId) {
+        let currentPlayer = {
+          false: "W",
+          true: "B"
+        }
+
+        let currentRow = this.state.gameBoard[rowId].row
+        for(let i=cellId+1;i<currentRow.length;i++) {
+          if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
+            return true;
+          }
+        }
+
+        for(let i=cellId+1;i>=0;i--) {
+          if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
+            return true;
+          }
+        }
+
+
+      // check to see if there is an anchor
+    }
 
     // takesVertically (rowId, cellId) {
     //   return false
