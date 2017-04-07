@@ -12,7 +12,8 @@ the immediate surrounding boxes are.
 public static boolean isLegalMove(int rowIdx, int colIdx) {
 
         //col loop
-        for (int i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        for (int i = (rowIdx ==0 ? rowIdx: rowIdx - 1); i <= (rowIdx ==7 ? rowIdx: rowIdx + 1); i++) {
+
 
             String[] colArr = rowList.get(i).getRow().split(",");
             if (rowIdx == i)
@@ -26,7 +27,7 @@ public static boolean isLegalMove(int rowIdx, int colIdx) {
 
         //row loop
         String[] rowColArr = rowList.get(rowIdx).getRow().split(",");
-        for (int i = colIdx - 1; i <= colIdx + 1; i++) {
+        for (int i = (colIdx==0 ? colIdx : colIdx - 1); i <= (colIdx==7 ? colIdx :colIdx + 1); i++) {
             if (colIdx == i)
                 continue;
 
