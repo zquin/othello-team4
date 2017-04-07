@@ -1,0 +1,35 @@
+THis only makes sure there are surrounding pieces that are either black or white.  This is the start to see if we can work legal plays into this as  well
+if you pass in row 6, col 5 and the next potential play the method will check 6,4 5,5 6,6 and 7,5 to see if the new peice will be touching
+any existing peices. if there is a peice there it returns true if not it isnt a legal move.  I may have been thinking to
+narrow about this to incorporate plays into the method but my mind is tired.
+
+
+public static boolean isLegalMove(int rowIdx, int colIdx) {
+
+        //col loop
+        for (int i = rowIdx - 1; i <= rowIdx + 1; i++) {
+
+            String[] colArr = rowList.get(i).getRow().split(",");
+            if (rowIdx == i)
+                continue;
+
+            if ((colArr[colIdx].equals("B") || colArr[colIdx].equals("W")))
+                return true;
+//            System.out.println("Value: " + colArr[i] + " Row:" + i + " Col: " + colIdx + " Legal: " + legalMove);
+        }
+
+
+        //row loop
+        String[] rowColArr = rowList.get(rowIdx).getRow().split(",");
+        for (int i = colIdx - 1; i <= colIdx + 1; i++) {
+            if (colIdx == i)
+                continue;
+
+            if ((rowColArr[i].equals("B") || rowColArr[i].equals("W"))) {
+                return  true;
+            }
+
+//            System.out.println("Value: " + rowColArr[i] + " Row:" + rowIdx + " Col: " + i + " Legal: " + legalMove);
+        }
+        return false;
+    }

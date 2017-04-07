@@ -3,6 +3,7 @@ package com.allstate.compozed.othello.controller;
 import com.allstate.compozed.othello.domain.game.GameBoard;
 import com.allstate.compozed.othello.domain.game.Row;
 import com.allstate.compozed.othello.domain.user.User;
+import com.allstate.compozed.othello.exception.RegisteredUserException;
 import com.allstate.compozed.othello.repository.GameBoardRepository;
 import com.allstate.compozed.othello.repository.UserRepository;
 import org.junit.After;
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,6 +287,22 @@ public class OthelloControllerTest {
                 .andExpect(jsonPath("$", hasSize(2)));;
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void testRegisterdUser() throws Exception
+    {
+        userRepository.save(user);
+
+        MockHttpServletRequestBuilder request = post("/users/").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"emailAddress\": \"zquinn@allstate.com\",\"password\":\"allstate\"}");
+
+        this.mockMvc.perform(request)
+                .andExpect(status().isConflict());
+
+//        this.mockMvc.perform(request)
+//                .andExpect(status().isConflict());
+    }
 //    @Test
 //    @Transactional
 //    @Rollback
