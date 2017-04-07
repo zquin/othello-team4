@@ -4,6 +4,11 @@ any existing peices. if there is a peice there it returns true if not it isnt a 
 narrow about this to incorporate plays into the method but my mind is tired.
 
 
+It appears that this legalMove may have to take in a color at some point to turn it into a legal move and a legal play
+method.  The front end is already blocking moves of squares that are already occupied so the only time this should be called
+is when an unoccupied square is avaiable.  A color would help or the front end can detect if a click is happening what color
+the immediate surrounding boxes are.
+
 public static boolean isLegalMove(int rowIdx, int colIdx) {
 
         //col loop
