@@ -25,7 +25,7 @@ describe('Full Application testing', ()=> {
       fetchMock.restore();
     });
 
-    xit('playerTakeTurn allows a player to place piece for a valid move', () => {
+    it('playerTakeTurn allows a player to place piece for a valid move', () => {
       //the places Im tryign to place a piece may not be valid in this test
       let startValue = state.gameBoard[3].row[3];
       expect(startValue).toBe('W');
@@ -109,10 +109,10 @@ describe('Full Application testing', ()=> {
       expect(state.gameBoard[6].row[3]).toBe('x')
     })
 
-    it('isTaking returns ?????? if a potential move will take pieces', () => {
+    xit('isTaking returns ?????? if a potential move will take pieces', () => {
     })
 
-    xit('takesVertically reutrns false if it cant take peieces' () => {
+    xit('takesVertically reutrns false if it cant take peieces', () => {
       let startValue = state.gameBoard[3].row[3];
       expect(startValue).toBe('W');
       let nextPlace = state.gameBoard[2].row[3]
