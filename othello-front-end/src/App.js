@@ -206,20 +206,9 @@ class App extends Component {
 
               if ((xCoordinate !== 0) && yCoordinate === 0) {
                 // traverse the currentRow
-                let i=cellId+1;
-                let found = false
-                while(i<currentRow.length) {
+                for(let i=cellId+1;i<currentRow.length;i++) {
                   if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-                    found = true
-                    break;
-                  } else {
-                    i++
-                  }
-                }
-                //this.state.gameBoard[rowId].row[i]
-                if(found) {
-                  for(let j = i; j > cellId; j++) {
-                    //flip from
+                    return true;
                   }
                 }
 
