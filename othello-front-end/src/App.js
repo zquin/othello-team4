@@ -21,16 +21,6 @@ class App extends Component {
                 {row: "xxxxxxxx"},
                 {row: "xxxxxxxx"}
             ],
-            updatedGameBoard:[
-              {row: "xxxxxxxx"},
-              {row: "xxxxxxxx"},
-              {row: "xxxxxxxx"},
-              {row: "xxxWBxxx"},
-              {row: "xxxBWxxx"},
-              {row: "xxxxxxxx"},
-              {row: "xxxxxxxx"},
-              {row: "xxxxxxxx"}
-            ],
             blacksTurn: true,
             userId: "-1",
             gameId: -1,
@@ -51,9 +41,21 @@ class App extends Component {
     playerTakeTurn (rowId, cellId) {
         let player = this.state.blacksTurn ? 'B' : 'W';
         if (this.isLegal(rowId, cellId, player)) {
-            this.changeColor(rowId, cellId)
             // update the game board to updatedGameBoard which will
             // flip the pieces that have been taken
+            // let state = this.state
+            // state.gameBoard = state.updatedGameBoard
+            // this.setState(state)
+            let state = this.state
+            console.log(this.state.newThing)
+            for (let element in this.state.newThing) {
+                console.log("new thing stuff = " + this.state.newThing[element].toString().split(',').join(''))
+                console.log(state.gameBoard[element].row)
+                state.gameBoard[element].row = this.state.newThing[element].toString().split(',').join('')
+            }
+
+            this.changeColor(rowId, cellId)
+
         }
     }
 
@@ -161,8 +163,8 @@ class App extends Component {
         }
     }
 
-    changeColorForFlipping(rowId, cellId, tempGameBoard) { //has a test
-
+    changeColorForFlipping(rowId, cellId, tmp) { //has a test
+        let tempGameBoard = tmp
         let newRow = tempGameBoard[rowId].row.split("")
         this.state.blacksTurn ? newRow[cellId] = "B" : newRow[cellId] = "W"
         tempGameBoard[rowId].row = newRow.join('')
@@ -170,6 +172,8 @@ class App extends Component {
     }
 
     hasAnAnchor(rowId, cellId) {
+        let state = this.state
+
         let currentPlayer = {
           false: "W",
           true: "B"
@@ -188,15 +192,18 @@ class App extends Component {
         // [ x 0 x ]
         // [ x x x ]
         // let state = this.state
-        //
-        // //state.updatedGameBoard = Array.from(this.state.gameBoard)
-        // for (let element in this.state.gameBoard) {
-        //   state.updatedGameBoard[element] = this.state.gameBoard[element]
-        // }
-        //this.setState(state)
+        // //
 
+        let updatedGameBoard = []
+        for (let element in this.state.gameBoard) {
+          updatedGameBoard[element] = (this.state.gameBoard[element].row.split(''))
+        }
+        // let newRow = updatedGameBoard[rowId]
+        // this.state.blacksTurn ? newRow[cellId] = "Zach" : newRow[cellId] = "Mike"
+        // updatedGameBoard[rowId] = newRow
+
+        // this.setState(state)
         for(let element=0;element<this.state.locationAround.length; element++) {
-            console.log("index = " + element + " value = " +this.state.locationAround[element])
             if (this.state.locationAround[element].length>0) {
               // a coordinate is found
               let xCoordinate = this.state.locationAround[element][0]
@@ -214,18 +221,15 @@ class App extends Component {
 
 
 
-
                 for(let i=cellId-1;i>=0;i--) {
-                  let state = this.state
-                  //TODO
-                  //console.log("updatedGameBoard row = " + state.updatedGameBoard[rowId].row[i])
-                  console.log("i = " + i)
-                  // console.log("before change color called = " + state.updatedGameBoard)
-                  let temp = this.changeColorForFlipping(rowId, i, state.updatedGameBoard.slice())
-                  console.log("temp = " + temp)
-                  console.log("after change color called = " + state.updatedGameBoard[rowId])                  // state.updatedGameBoard[rowId].row[i] = !currentPlayer
+                    let newRow = updatedGameBoard[rowId]
+                    this.state.blacksTurn ? newRow[i] = "B" : newRow[i] = "W"
+                    this.state.blacksTurn ? newRow[cellId] = "B" : newRow[cellId] = "W"
+                    updatedGameBoard[rowId] = newRow
                   if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
-                    //this.setState(state)
+                      let state = this.state
+                      state.newThing = updatedGameBoard
+                      this.setState(state)
                     return true;
                   }
                 }
