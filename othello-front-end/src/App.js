@@ -212,6 +212,9 @@ class App extends Component {
                   }
                 }
 
+
+
+
                 for(let i=cellId-1;i>=0;i--) {
                   let state = this.state
                   //TODO
