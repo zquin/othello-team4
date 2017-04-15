@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FormField, Form} from 'react-pattern-library';
+// import {FormField, Form} from 'react-pattern-library';
 
 class RegisterUser extends Component {
 
@@ -13,13 +13,13 @@ class RegisterUser extends Component {
 
     render() {
         return (
-            <Form id='registration-form'>
-              <FormField
+            <form id='registration-form'>
+              <input type="text"
                   onChange={ (e) => {this.state.emailAddress = e.target.value }}
                   id="email-box"
                   label="email"
                   required />
-              <FormField
+              <input type="text"
                   onChange={ (e) => {this.state.password = e.target.value }}
                   id="password-box"
                   label="password"
@@ -29,7 +29,7 @@ class RegisterUser extends Component {
                 <button className="c-btn c-btn--secondary reg-log-buttons-div" type='submit' id="register-button" onClick={ () => this.props.onRegister(this.state) }>Register</button>
                 <button className="c-btn c-btn--secondary reg-log-buttons-div" type='submit' id="login-button" onClick={ () => this.props.onLogin(this.state) }>Login</button>
               </div>
-            </Form>
+            </form>
         )
     }
 }

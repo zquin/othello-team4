@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {FormField, Form} from 'react-pattern-library';
 import './App.css';
 import RegisterUser from "./RegisterUser";
 import GameBoard from "./GameBoard";
@@ -46,13 +45,13 @@ class App extends Component {
             // let state = this.state
             // state.gameBoard = state.updatedGameBoard
             // this.setState(state)
-            let state = this.state
-            console.log(this.state.newThing)
-            for (let element in this.state.newThing) {
-                console.log("new thing stuff = " + this.state.newThing[element].toString().split(',').join(''))
-                console.log(state.gameBoard[element].row)
-                state.gameBoard[element].row = this.state.newThing[element].toString().split(',').join('')
-            }
+            // let state = this.state
+            // console.log(this.state.newThing)
+            // for (let element in this.state.newThing) {
+            //     console.log("new thing stuff = " + this.state.newThing[element].toString().split(',').join(''))
+            //     console.log(state.gameBoard[element].row)
+            //     state.gameBoard[element].row = this.state.newThing[element].toString().split(',').join('')
+            // }
 
             this.changeColor(rowId, cellId)
 
@@ -215,6 +214,7 @@ class App extends Component {
                 // traverse the currentRow
                 for(let i=cellId+1;i<currentRow.length;i++) {
                   if(currentRow[i] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID RIGHT")
                     return true;
                   }
                 }
@@ -230,6 +230,7 @@ class App extends Component {
                       let state = this.state
                       state.newThing = updatedGameBoard
                       this.setState(state)
+                      console.log("VALID LEFT")
                     return true;
                   }
                 }
@@ -242,6 +243,7 @@ class App extends Component {
                 // traverse Vertically up
                 for(let i=(rowId-1);i>=0;i--) {
                   if (this.state.gameBoard[(i)].row[cellId] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID UP")
                     return true;
                   }
                 }
@@ -251,7 +253,7 @@ class App extends Component {
                 // trverse vertically down
                 for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
                   if (this.state.gameBoard[(i)].row[cellId] === currentPlayer[this.state.blacksTurn]) {
-
+                    console.log("VALID DOWN")
                     return true;
                   }
                 }
@@ -260,6 +262,7 @@ class App extends Component {
                 // traverse top left diag
                 for(let i=(rowId-1);i>=0;i--) {
                   if (this.state.gameBoard[(i)].row[cellId+i] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID TOP LEFT")
                     return true;
                   }
                 }
@@ -268,6 +271,7 @@ class App extends Component {
                 // traverse top right diag
                 for(let i=(rowId-1);i>=0;i--) {
                   if (this.state.gameBoard[(i)].row[cellId-i] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID TOP RIGHT")
                     return true;
                   }
                 }
@@ -276,6 +280,7 @@ class App extends Component {
                 // traverse bottom left diag
                 for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
                   if (this.state.gameBoard[(i)].row[cellId-i] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID BOTTOM LEFT")
                     return true;
                   }
                 }
@@ -284,6 +289,7 @@ class App extends Component {
                 // traverse bottom right diag
                 for(let i=(rowId+1);i<this.state.gameBoard.length;i++) {
                   if (this.state.gameBoard[(i)].row[cellId+i] === currentPlayer[this.state.blacksTurn]) {
+                    console.log("VALID BOTTOM RIGHT")
                     return true;
                   }
                 }
